@@ -3,7 +3,7 @@
     <router-link to="/">Connexion</router-link> |
     <router-link to="/signup">Créer un compte</router-link>
     <!--à supprimer plus tard -->
-    |<router-link to="/home"> Page principale</router-link>
+    |<router-link to="/home" @click="menu_on"> Page principale</router-link>
   </nav> 
   <div >
     <div class="truc">
@@ -50,10 +50,21 @@ nav {
 </style>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'loginSignup',
   props: {
     msg: String
+  },
+  computed: {
+    ...mapState(['menu'])
+  },
+  methods: {
+    menu_on(){
+      this.$store.commit('menu_on')
+    }
+    }
   }
-}
+
 </script>

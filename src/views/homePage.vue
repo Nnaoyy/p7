@@ -1,14 +1,11 @@
 <template>
-    <nav>
-        <img src="../assets/icon-left-font-monochrome-black.svg"  >
-        <a href="#">profil</a>
-        <input type="search" name="search" placeholder="Recherche"/>
-        <router-link to="/">Déconnexion</router-link> 
-    </nav>
+    <h1>truc</h1>
+    
 </template>
 
+
 <style lang="scss">
-nav{
+#menu{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -19,3 +16,6 @@ img{
     height: 30px;
 }
 </style>
+<script>
+
+</script>
