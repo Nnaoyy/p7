@@ -2,7 +2,7 @@
 
 <!--a changer avec les données de la BDD -->
 
-    <div v-for="n in 10" :key="n" id="post">
+    <div  >
         <div id="profil"><!-- qui publie-->
            <img src="" alt="photo profil miniature">
            <p>Nom Prénom</p>  

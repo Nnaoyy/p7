@@ -1,6 +1,7 @@
 <template>
-    
-    <post />
+    <div v-for="n in 10" :key="n" id="post"><!-- tout les posts-->
+        <post />
+    </div>
 </template>
 
 
