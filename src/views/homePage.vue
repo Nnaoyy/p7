@@ -1,6 +1,6 @@
 <template>
-    <h1>truc</h1>
     
+    <post />
 </template>
 
 
@@ -17,5 +17,15 @@ img{
 }
 </style>
 <script>
+    import post from '@/components/post.vue'
 
+    export default {
+        name: 'postMeme',
+        components:{
+            post
+        },
+        
+    }
+
+    
 </script>

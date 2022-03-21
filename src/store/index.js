@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    menu : false
+    menu : document.location.href.includes("home")
   },
   getters: {
   },

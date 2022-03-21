@@ -1,10 +1,12 @@
 <template>
   <nav id="menu" v-show="menu">
+    <router-link to="/home">
         <img src="./assets/icon-left-font-monochrome-black.svg"  >
-        <a  href="#">profil</a>
-        <input  type="search" name="search" placeholder="Recherche"/>
-        <router-link to="/"  @click="menu_off">Déconnexion</router-link> 
-    </nav>
+    </router-link>
+    <router-link to="/home/profil">profil</router-link>
+    <input  type="search" name="search" placeholder="Recherche"/>
+    <router-link to="/" @click="menu_off" >Déconnexion</router-link> 
+  </nav>
   <router-view/>
 </template>
 
@@ -18,7 +20,7 @@
 }
 
 </style>
-
+  
 <script>
 
 import { mapState, } from 'vuex'
@@ -35,6 +37,5 @@ export default {
   }
    
 }
-
 
 </script>
