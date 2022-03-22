@@ -1,13 +1,15 @@
 <template>
+<div>
   <nav id="menu" v-show="menu">
     <router-link to="/home">
         <img src="./assets/icon-left-font-monochrome-black.svg"  >
     </router-link>
     <router-link to="/home/profil">profil</router-link>
     <input  type="search" name="search" placeholder="Recherche"/>
-    <router-link to="/" @click="menu_off" >Déconnexion</router-link> 
+    <router-link to="/" @click="menu_off" >Déconnexion</router-link>  
   </nav>
   <router-view/>
+</div>
 </template>
 
 <style lang="scss">

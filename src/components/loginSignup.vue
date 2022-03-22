@@ -1,4 +1,5 @@
 <template>
+<div>
   <nav>
     <router-link to="/">Connexion</router-link> |
     <router-link to="/signup">Créer un compte</router-link>
@@ -11,6 +12,7 @@
         <h1>{{ msg }} </h1>
     </div>
     </div>
+  </div>
   </div>
 </template>
 
