@@ -4,7 +4,7 @@
         <loginSignup msg="Bienvenue sur Groupomania"/>
     </div>
     <div>
-      <form class="signup">
+      <form class="signup" @submit.prevent="signup">
         <fieldset>
           <label for="name">Nom</label>
           <input type="text" name="name" v-model="newUser.lastName"/>
@@ -18,7 +18,7 @@
             <label for="pass">Mot de passe</label>
             <input type="password" name="pass" v-model="newUser.password"/>
           <br/>
-          <input @click="signup" type="submit" value="S'inscrire" class="button"/>
+          <input  type="submit" value="S'inscrire" class="button"/>
         </fieldset>
       </form>
     </div>
@@ -31,7 +31,8 @@
 
     
 
-import loginSignup from '@/components/loginSignup.vue'
+import loginSignup from '@/components/loginSignup.vue';
+import { mapState } from 'vuex'
 
 export default {
   name: 'HomeView',
@@ -48,11 +49,13 @@ export default {
   components: {
     loginSignup
   },
-
+  computed: {
+    ...mapState(['menu'])
+  },
   methods:{
     
-    signup(event) {
-      event.preventDefault();
+    signup() {
+      const self = this;
       const user = {
         ...this.newUser
       }
@@ -64,7 +67,27 @@ export default {
         mode: 'cors',
         body: JSON.stringify(user),
         })  
-      .then(console.log(user))
+      .then(function(){
+        fetch('http://localhost:3000/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+        body: JSON.stringify(user),
+        })  
+        .then(res => {
+        const localData = res
+        localData.json().then(data => {                
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('userId', data.userId)
+        })
+          self.$store.commit('menu_on');
+          self.$router.push("/home");
+          
+          })
+        .catch(error => { error})  
+      })
       .catch(error => { error})    
     }
   } 

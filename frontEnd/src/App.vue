@@ -6,7 +6,7 @@
     </router-link>
     <router-link to="/home/profil">profil</router-link>
     <input  type="search" name="search" placeholder="Recherche"/>
-    <router-link to="/" @click="menu_off" >Déconnexion</router-link>  
+    <router-link to="/" @click="logOut" >Déconnexion</router-link>  
   </nav>
   <router-view/>
 </div>
@@ -33,8 +33,11 @@ export default {
     
   },
   methods: {
-    menu_off() {
-      this.$store.commit('menu_off')
+    logOut() {
+      this.$store.commit('menu_off');
+      localStorage.setItem('token', null)
+      localStorage.setItem('userId', null)
+      console.log(localStorage);
     }
   }
    

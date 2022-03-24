@@ -18,7 +18,7 @@ exports.signup = (req, res) => {
           connection.query(sql, [user.lastName, user.firstName, user.email, user.password],
            function(err,result){
             if (err) throw err;
-            res.status(201).json({ message: `Utilisateur ${user.prenom} ajouté` });
+            res.status(201).json({ message: `Utilisateur ${user.firstName} ajouté` });
            })
       })    
       .catch(error => res.status(500).json(error));
@@ -42,7 +42,7 @@ exports.login = (req, res, next) => {
           return res.status(401).json({ error: 'Mot de passe incorrect !' });
         }
         res.status(200).json({
-          userId: user._id,
+          userId: user.id,
           token: jwt.sign(
             { userId: user._id },
             'RANDOM_TOKEN_SECRET',

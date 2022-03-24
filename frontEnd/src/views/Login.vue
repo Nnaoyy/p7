@@ -5,7 +5,7 @@
   </div>
   
   <div>
-    <form class="login">
+    <form class="login" @submit.prevent="login" >
       <fieldset>
           <label for="mail">Adresse mail</label>
           <input type="email" name="mail" v-model="user.email"/>
@@ -13,7 +13,7 @@
           <label for="pass">Mot de passe</label>
           <input type="password" name="pass" v-model="user.password"/>
         <br/>
-        <input @click="login" type="submit" value="Connexion" class="button"/>
+        <input type="submit" value="Connexion" class="button"/>
       </fieldset>
     </form>
   </div>
@@ -23,11 +23,12 @@
 <script>
 // @ is an alias to /src
 
-import loginSignup from '@/components/loginSignup.vue'
+import loginSignup from '@/components/loginSignup.vue';
+import { mapState } from 'vuex'
 
 
 export default {
-  name: 'HomeView',
+  name: 'LogIn',
   data() {
     return{
       user:{
@@ -40,10 +41,14 @@ export default {
     
     loginSignup
   },
+  computed: {
+    ...mapState(['menu'])
+  },
 
+      
   methods:{
-    login(event) {
-      event.preventDefault();
+    login() {
+      const self = this;
       const user = {
         ...this.user
       }
@@ -55,7 +60,16 @@ export default {
         mode: 'cors',
         body: JSON.stringify(user),
         })  
-      .then(console.log(user))
+      .then(res => {
+        const localData = res
+        localData.json().then(data => {                
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('userId', data.userId)
+        console.log(localStorage);
+        })   
+        self.$store.commit('menu_on');
+        self.$router.push("/home"); 
+        })
       .catch(error => { error})    
     
     }

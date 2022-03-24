@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div v-for="n in 10" :key="n" id="post"><!-- tout les posts-->
+    <div id="post"><!-- tout les posts-->
         <post />
     </div>
 </div>
@@ -23,7 +23,7 @@ img{
     import post from '@/components/post.vue'
 
     export default {
-        name: 'postMeme',
+        name: 'HomeView',
         components:{
             post
         },
