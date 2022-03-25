@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const connection = require('../config/config.js');
+const fs = require('fs');
 
 
 exports.signup = (req, res) => {
@@ -53,3 +54,42 @@ exports.login = (req, res, next) => {
       .catch(error => res.status(500).json({ error }));
   })
 };
+
+exports.getOneUser= (req, res, next) => {
+  let sql= 'select * from user where id=?';
+  connection.query(sql, [req.params.id], function (err, result) {
+    let user = result[0];
+    return res.status(200).json(user)
+  })
+};
+
+
+exports.userFile= (req, res, next) => {
+  let imageUrl= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  let sql= 'select * from user where id=?';
+  connection.query(sql, [req.params.id], function (err, result) {
+    let user = result[0];
+    console.log(user);
+      if(user.imageUrl){
+        const filename = user.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${filename}`, () => {
+          let sql = 'UPDATE `user` SET `imageUrl` = ? where `id`=?';
+          connection.query(sql, [imageUrl, req.params.id],
+           function(err,result){
+            if (err) throw err;
+            res.status(201).json({ message: `photo de profil modifiée` });
+           })
+        })
+      }
+      else{
+        let sql = 'UPDATE `user` SET `imageUrl` = ? where `id`=?';
+          connection.query(sql, [imageUrl, req.params.id],
+           function(err,result){
+            if (err) throw err;
+            res.status(201).json({ message: `photo de profil modifiée` });
+           })
+          }
+        })
+    
+};
+      

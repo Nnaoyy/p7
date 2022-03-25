@@ -4,7 +4,7 @@
     <router-link to="/home">
         <img src="./assets/icon-left-font-monochrome-black.svg"  >
     </router-link>
-    <router-link to="/home/profil">profil</router-link>
+    <router-link to="/home/profil" >profil</router-link>
     <input  type="search" name="search" placeholder="Recherche"/>
     <router-link to="/" @click="logOut" >Déconnexion</router-link>  
   </nav>
@@ -25,7 +25,7 @@
   
 <script>
 
-import { mapState, } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   computed: {
@@ -38,7 +38,9 @@ export default {
       localStorage.setItem('token', null)
       localStorage.setItem('userId', null)
       console.log(localStorage);
-    }
+    },
+    
+    
   }
    
 }
