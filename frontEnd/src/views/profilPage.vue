@@ -16,14 +16,12 @@
                             </div>                
                         </label>
                         <input type="file" ref="file" name="file" id="file" @change="selectFile"> 
-                        <label for="password" >
-                            <div>
-                                Changer de mot de passe :
-                            </div>                
-                        </label>
-                        <input type="password" ref="password" name="password" id="password" v-model="password">         
+                        <label for="pass">Mot de passe</label>
+                        <input type="password" name="pass" id="password" v-model="password"/>            
+                        <p id="passwordErrorMsg"></p>
+                        <p>le mot de passe doit contenir au moins 8 charactère avec au moins une Majuscule, une minuscule et un chiffre </p>>         
 
-                        <input type="submit" value="modifier" class="btn" @click.prevent="changeProfile">
+                        <input type="submit" value="modifier" class="btn" @click.prevent="modifProfil">
                     </form>
                 
                 </div>
@@ -93,6 +91,22 @@
         this.profil()
     },
     methods:{
+        verifyPassword() {
+        if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/i.test(this.password)){
+        document.getElementById("passwordErrorMsg").textContent = "Mot de passe non valide!"
+        document.getElementById("password").style.border = "3px solid red";
+        }
+        else if (/[#?!@$%^&*-]/.test(this.password)){
+        document.getElementById("passwordErrorMsg").textContent = "Le mot de passe ne doit pas contenir de charactère spéciaux!"
+        document.getElementById("password").style.border = "3px solid red";
+        }
+        else{
+        document.getElementById("passwordErrorMsg").textContent = "Mot de passe valide";
+        document.getElementById("password").style.border = "3px solid green";
+        return true;
+     }
+    },
+
         profil(){
             const self = this;            
             axios.get(`http://localhost:3000/api/user/${localStorage.getItem('userId')}`, {
@@ -123,17 +137,30 @@
             this.file="";
             this.password=null;
         },
+        modifProfil(){
+           
+            if (this.password){
+                if (this.verifyPassword()){
+                    this.changeProfile();
+                }
+                
+            }
+            if (this.file && !this.password){
+                this.changeProfile();
+            }
+        },
         changeProfile(){
+            
             let formData = new FormData()
+            
+            if(this.file){
+                console.log(this.file);
+                formData.append('file',this.file)
+            }
             if (this.password){
                 console.log(this.password);
                 formData.append('password',this.password)
             }
-            if(this.file){
-                console.log(this.file);
-                formData.append('file', this.file)
-            }
-            
             axios.put(`http://localhost:3000/api/user/${localStorage.getItem('userId')}`, formData,{
             
             headers: {
