@@ -13,6 +13,7 @@
           <label for="pass">Mot de passe</label>
           <input type="password" name="pass" v-model="user.password"/>
         <br/>
+          <p id="errorMsg"></p>
         <input type="submit" value="Connexion" class="button"/>
       </fieldset>
     </form>
@@ -44,10 +45,18 @@ export default {
   computed: {
     ...mapState(['menu'])
   },
-
-      
+  //si le token d'identification est toujours présent on envoie sur la page principale
+  beforeCreate(){
+    if (localStorage.getItem('token')!== 'null'){
+      this.$store.commit('menu_on');
+      this.$router.push('/home');
+      } 
+  },
   methods:{
-    login() {
+    
+      
+ 
+   login() {
       const self = this;
       const user = {
         ...this.user
@@ -61,6 +70,7 @@ export default {
         body: JSON.stringify(user),
         })  
       .then(res => {
+        if (res.status == 200){
         const localData = res
         localData.json().then(data => {                
         localStorage.setItem('token', data.token)
@@ -69,13 +79,17 @@ export default {
         })   
         self.$store.commit('menu_on');
         self.$router.push("/home"); 
+        }
+        else{
+          document.getElementById("errorMsg").textContent = "adresse mail ou mot de passe incorect";
+        }
         })
       .catch(error => { error})    
     
     }
       
   }
-};
+}
 </script>
 
 <style lang="scss">
@@ -95,6 +109,9 @@ export default {
       
     }
 
+  }
+  #errorMsg{
+    color: red;
   }
   
 </style>

@@ -3,8 +3,7 @@
   <nav>
     <router-link to="/">Connexion</router-link> |
     <router-link to="/signup">Créer un compte</router-link>
-    <!--à supprimer plus tard -->
-    |<router-link to="/home" @click="menu_on"> Page principale</router-link>
+    
   </nav> 
   <div >
     <div class="truc">
