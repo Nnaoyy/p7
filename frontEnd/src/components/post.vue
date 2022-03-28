@@ -1,23 +1,16 @@
 <template>
-
-<!--a changer avec les données de la BDD -->
-
-    <div  >
-        <div id="profil"><!-- qui publie-->
-           <img src="" alt="photo profil miniature">
-           <p>Nom Prénom</p>  
-        </div>
-        <div id="meme"><!--meme -->
-            <h4>truc</h4>
-            <img src="../assets/meme.jpg" >
-            <div>
-                <span>
-                <button>like</button>
-                <button>dislike</button>
-                </span>
-                <button>commentaire</button>
-            </div>
-        </div>
+    <div>
+        <form >
+            <label for="post" >
+                <div >
+                    <img id="preview"  src="" >   
+                </div>                
+            </label>
+            <input type="file" ref="file" name="post" id="post" @change="selectFile"> 
+            <label for="postMsg">Titre:</label>
+            <input type="text" name="postTitle" id="postTitle" />            
+            <input type="submit" value="envoyer" class="btn" @click.prevent="sendPost">
+        </form>
     </div>
 
 </template>
@@ -26,29 +19,29 @@
 
 
 export default {
-    name: 'postMeme'
+    name: 'postMeme',
+    data(){
+        return{
+            
+            file:''
+        }
+    },
+    methods:{
+        selectFile(event) {
+            this.file = this.$refs.file.files[0]
+            let input = event.target
+            
+            if(input.files) {
+                let reader = new FileReader() 
+                reader.onload = (e) => {
+                    document.getElementById('preview').src = e.target.result
+                }
+                reader.readAsDataURL(input.files[0])
+            }
+        },
+        sendPost(){
+            
+        }
+    }
 }
 </script>
-
-<style lang="scss">
-    #post{
-        border: 2px solid black;
-        margin: 20px 30%;
-    }
-    #profil{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-
-    }
-    #meme{
-        img{
-            width: 100%;
-            height: auto;
-        }
-        div{
-            display: flex;
-            justify-content: space-between;
-        }
-    }
-</style>

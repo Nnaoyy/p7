@@ -1,6 +1,6 @@
 <template>
 <div>
-  <nav id="menu" v-show="menu">
+  <nav id="menu" v-show="menu  && !nonMenu">
     <router-link to="/home">
         <img src="./assets/icon-left-font-monochrome-black.svg"  >
     </router-link>
@@ -29,7 +29,9 @@ import { mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapState(['menu'])
+    ...mapState(['menu']),
+    ...mapState(['nonMenu'])
+    
     
   },
   methods: {

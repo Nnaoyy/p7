@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     menu : document.location.href.includes("home"),
+    nonMenu : document.location.href.includes("home#"),
     user: [],
     nom: "",
     prénom: "",

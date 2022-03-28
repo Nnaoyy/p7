@@ -38,7 +38,7 @@
         </div>
         <div >
             <div id="profilPost"><!--les post de l'utilisateur-->
-                <post/>
+                <posts/>
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@
 </style>
 
 <script>
-    import post from '@/components/post.vue'
+    import posts from '@/components/posts.vue'
     import axios from 'axios';
 
     export default {
@@ -81,7 +81,7 @@
 
         },
         components:{
-            post,
+            posts,
 
             
         },

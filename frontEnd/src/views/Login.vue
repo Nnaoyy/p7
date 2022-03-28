@@ -45,7 +45,7 @@ export default {
   computed: {
     ...mapState(['menu'])
   },
-  //si le token d'identification est toujours présent on envoie sur la page principale
+  //si le token d'identification est présent on envoie sur la page principale
   beforeCreate(){
     if (localStorage.getItem('token')!== 'null'){
       this.$store.commit('menu_on');
