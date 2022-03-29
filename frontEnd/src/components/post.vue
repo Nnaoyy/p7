@@ -8,7 +8,7 @@
             </label>
             <input type="file" ref="file" name="post" id="post" @change="selectFile"> 
             <label for="postMsg">Titre:</label>
-            <input type="text" name="postTitle" id="postTitle" />            
+            <input type="text" name="postTitle" id="postTitle" v-model="postTitle"/>            
             <input type="submit" value="envoyer" class="btn" @click.prevent="sendPost">
         </form>
     </div>
@@ -16,14 +16,16 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 
 export default {
+    
     name: 'postMeme',
     data(){
         return{
-            
-            file:''
+            postTitle:'',
+            file:'',
         }
     },
     methods:{
@@ -40,7 +42,26 @@ export default {
             }
         },
         sendPost(){
+            let formData = new FormData()
+            formData.append('userId', localStorage.getItem('userId'))
+            if(this.file){
+                console.log(this.file);
+                formData.append('file',this.file)
+            }
+            if (this.postTitle){
+                console.log(this.postTitle);
+                formData.append('postTitle',this.postTitle)
+            }
+            axios.post(`http://localhost:3000/api/post/`, formData,{
             
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+            
+            
+            })
+            .then(location.reload())
+            .catch(error => { console.log(error)})
         }
     }
 }

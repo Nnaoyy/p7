@@ -1,9 +1,9 @@
 <template>
 <div>
-    <div id="post"><!-- pour poster qqch-->
+    <div ><!-- pour poster qqch-->
         <post />
     </div>
-    <div id="posts"><!-- tout les posts-->
+    <div ><!-- tout les posts-->
         <posts />
     </div>
 </div>

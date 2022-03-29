@@ -1,5 +1,6 @@
 const express = require('express');
-const userRoutes = require ('./routes/user')
+const userRoutes = require ('./routes/user');
+const postRoutes = require ('./routes/post');
 const connection = require('./config/config.js');
 const cors = require('cors');
 const path = require('path');
@@ -28,5 +29,6 @@ app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/api/user', userRoutes);
+app.use('/api/post', postRoutes);
 
 module.exports = app;
