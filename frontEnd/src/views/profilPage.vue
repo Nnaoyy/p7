@@ -37,7 +37,7 @@
             
         </div>
         <div >
-            <div id="profilPost"><!--les post de l'utilisateur-->
+            <div ><!--les post de l'utilisateur-->
                 <posts/>
             </div>
         </div>

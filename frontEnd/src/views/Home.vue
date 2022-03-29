@@ -3,7 +3,7 @@
     <div ><!-- pour poster qqch-->
         <post />
     </div>
-    <div ><!-- tout les posts-->
+    <div id="posts"><!-- tout les posts-->
         <posts />
     </div>
 </div>
@@ -21,6 +21,10 @@
 img{
     height: 30px;
 }
+#posts{
+        border: 2px solid black;
+        margin: 20px 30%;
+    }
 </style>
 <script>
     import posts from '@/components/posts.vue'
@@ -37,7 +41,8 @@ img{
                 this.$store.commit('menu_off');
                 this.$router.push('/');
             }
-        }
+        },
+        
     }
 
     

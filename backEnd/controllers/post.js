@@ -19,15 +19,24 @@ exports.getAllPost = (req, res, naxt) => {
       })
 };
 
+exports.getAllPostById = (req, res, next) =>{
+    let sql = 'SELECT * FROM `posts` WHERE user_id = ? JOIN `user` ON `posts`.`user_id` = `user`.`id`';
+    connection.query(sql,[req.params.id], function (err, result) {
+        let posts = result;
+        return res.status(200).json(posts)
+      })
+};
+
+
 exports.deletePost = (req, res, next) =>{
-    console.log(req.body);
     let sql = 'SELECT * FROM `posts` WHERE `postId`=?';
     connection.query(sql, [req.params.id], function(err,result){
         let post = result[0];
-        /*if (post.user_id !== ???){
+        console.log(post);
+        if (post.user_id !== req.body.id){
             return res.status(401).json({ error: 'accés non autorisé!' });
           }
-        else{*/
+        else{
             const filename = post.file.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
             let sql= 'DELETE FROM `posts` WHERE `postId`=?';
@@ -36,6 +45,6 @@ exports.deletePost = (req, res, next) =>{
             res.status(201).json({ message: `compte supprimé` });
            })
         })
-        /*}*/
+        }
     } )
 };
