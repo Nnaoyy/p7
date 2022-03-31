@@ -2,6 +2,7 @@ const connection = require('../config/config.js');
 const fs = require('fs');
 
 exports.createPost = (req, res, next) => {
+    console.log(req.body);
     let imageUrl= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     let sql='INSERT INTO `posts`(title, file, user_Id) VALUES (?,?,?)';
     connection.query(sql, [req.body.postTitle ,imageUrl , req.body.userId],
@@ -20,7 +21,7 @@ exports.getAllPost = (req, res, naxt) => {
 };
 
 exports.getAllPostById = (req, res, next) =>{
-    let sql = 'SELECT * FROM `posts` WHERE user_id = ? JOIN `user` ON `posts`.`user_id` = `user`.`id`';
+    let sql = 'SELECT * FROM `posts`  JOIN `user` ON `posts`.`user_id` = `user`.`id` WHERE `user_id` = ?';
     connection.query(sql,[req.params.id], function (err, result) {
         let posts = result;
         return res.status(200).json(posts)
@@ -33,7 +34,8 @@ exports.deletePost = (req, res, next) =>{
     connection.query(sql, [req.params.id], function(err,result){
         let post = result[0];
         console.log(post);
-        if (post.user_id !== req.body.id){
+        console.log(Number(req.body.id));
+        if (post.user_id !== Number(req.body.id)){
             return res.status(401).json({ error: 'accés non autorisé!' });
           }
         else{

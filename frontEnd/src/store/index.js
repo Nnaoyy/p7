@@ -8,7 +8,6 @@ export default createStore({
     nom: "",
     prénom: "",
 
-
   },
   getters: {
   },
@@ -23,8 +22,9 @@ export default createStore({
   },
   actions: {
     
-    
   },
+    
+  
   modules: {
   },
 })

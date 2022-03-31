@@ -2,24 +2,30 @@
     <div id="profilPage">
         <div>
             <div>
+                
                 <img :src=user.imageUrl alt="photo de profil" class="photoProfil">
+                <p>{{ user.nom }}</p>
+                <p>{{ user.prenom }}</p>
+                <div v-if="user.id==userId">
                 <button @click="modifImage" v-if="!this.modif">modification</button>
                 <button @click="modifAnnul" v-if="this.modif">annulation</button>
+                </div>
                 <div v-if="this.modif">
                     <form >
                         <label for="file" >
-                            <div>
-                                Changer d'image de profil :
-                            </div>
+                            <p> Changer d'image de profil :</p>
                             <div >
                                 <img id="preview" :src="user.profile" :alt="user.profile" class="photoProfil">   
                             </div>                
                         </label>
                         <input type="file" ref="file" name="file" id="file" @change="selectFile"> 
-                        <label for="pass">Mot de passe</label>
-                        <input type="password" name="pass" id="password" v-model="password"/>            
+                        <br/>
+                        <br/>
+                        <label for="pass">Nouveau mot de passe:</label>
+                        <br/>
+                        <input type="password" name="pass" id="password" v-model="password">            
                         <p id="passwordErrorMsg"></p>
-                        <p>le mot de passe doit contenir au moins 8 charactère avec au moins une Majuscule, une minuscule et un chiffre </p>>         
+                        <p>le mot de passe doit contenir au moins 8 charactère avec au moins une Majuscule, une minuscule et un chiffre </p>       
 
                         <input type="submit" value="modifier" class="btn" @click.prevent="modifProfil">
                     </form>
@@ -27,11 +33,8 @@
                 </div>
                 
             </div>
-            <div>
-                <p>{{ user.nom }}</p>
-                <p>{{ user.prenom }}</p>
-            </div>
-            <button @click.prevent="deleteUser" >suprimer le compte</button>
+            <br/>
+            <button v-if="user.id==userId" @click.prevent="deleteUser" >suprimer le compte</button>
 
             <!--a rajouter la modification du profil si le profil de l'utilisateur-->
             
@@ -67,7 +70,7 @@
 <script>
     import posts from '@/components/posts.vue'
     import axios from 'axios';
-
+    
     export default {
         name: 'postMeme',
         data() {
@@ -75,11 +78,13 @@
             user:{},
             modif:false,
             password:null,
-            file:''
+            file:'',
+            userId: localStorage.userId,
             };
             
 
         },
+        
         components:{
             posts,
 

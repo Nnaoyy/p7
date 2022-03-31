@@ -21,10 +21,14 @@
 img{
     height: 30px;
 }
-#posts{
+#post{
         border: 2px solid black;
-        margin: 20px 30%;
+        margin-bottom: 30px;
+        
     }
+#posts{
+    margin: 20px 30%;
+}
 </style>
 <script>
     import posts from '@/components/posts.vue'
