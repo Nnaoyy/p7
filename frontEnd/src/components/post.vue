@@ -44,14 +44,14 @@ export default {
         sendPost(){
             let formData = new FormData()
             formData.append('userId', localStorage.getItem('userId'))
-            /*if(this.file){
+            if(this.file){
                 console.log(this.file);
                 formData.append('file',this.file)
             }
             if (this.postTitle){
                 console.log(this.postTitle);
                 formData.append('postTitle',this.postTitle)
-            }*/
+            }
             axios.post(`http://localhost:3000/api/post/`, formData,{
             
             headers: {

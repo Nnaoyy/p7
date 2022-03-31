@@ -147,25 +147,24 @@ export default {
             this.sendLike()
             },
         sendLike(){
-            let formData = new FormData()
-            formData.append('userId', localStorage.getItem('userId'))
-            /*if(this.file){
-                console.log(this.file);
-                formData.append('file',this.file)
+            const id = {
+                userId:Number(localStorage.getItem('userId')),
+                postId:this.post_id
             }
-            if (this.postTitle){
-                console.log(this.postTitle);
-                formData.append('postTitle',this.postTitle)
-            }*/
-            axios.post(`http://localhost:3000/api/like/`, formData,{
-            
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-            
-            
+        fetch('http://localhost:3000/api/like/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        mode: 'cors',
+        body: JSON.stringify(id),
+        })  
+            .then(function (response) {
+                console.log(response);
+            const data = response.data;
+            console.log(data);
             })
-            .then(res =>{console.log(res.data.user_id)})
             .catch(error => { console.log(error)})
            
         }
