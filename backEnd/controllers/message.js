@@ -18,7 +18,7 @@ exports.getAllMessage = ( req, res, next) => {
 };
 
 exports.deleteMessage = ( req, res, next) => {
-
+    console.log(req.body.userId);
     let sql = 'SELECT * FROM `messages` WHERE `messageId`=?';
     connection.query(sql, [req.params.id], function(err,result){
         let message = result[0];

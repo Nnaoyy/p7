@@ -14,25 +14,33 @@
             <h4>{{ post.title }}</h4>
             <img :src=post.file :alt=post.title>
             <div>
-                <span >
-                <button @click="like(post.postId)" >like: {{ post.likeNumber }}</button>
-                <button >dislike: {{ post.dislikeNumber }}</button>
+                <span v-if="liked[post.postId]">
+                <button @click="likeOff(post.postId)" class="green" :name=this.likeNbr[post.postId]>like: {{ this.likeNbr[post.postId] = post.likeNumber }}</button>
+                <button disabled>dislike: {{ this.dislikeNbr[post.postId] = post.dislikeNumber }}</button>
+                </span>
+                <span v-else-if="disliked[post.postId]">
+                <button disabled >like: {{ this.likeNbr[post.postId] = post.likeNumber }}</button>
+                <button @click="dislikeOff(post.postId)" class="red">dislike: {{ this.dislikeNbr[post.postId] = post.dislikeNumber }}</button>
+                </span>
+                <span v-else>
+                <button @click="like(post.postId)" >like: {{ this.likeNbr[post.postId] = post.likeNumber }}</button>
+                <button @click="dislike(post.postId)">dislike: {{ this.dislikeNbr[post.postId] = post.dislikeNumber }}</button>
                 </span>
                 <button @click="comment(post.postId)">commentaire</button>
             </div>
         </div>
-        <div v-if="com" >
+        <div v-show="com[post.postId]" >
             <div v-for="com in allComs" :key="com.id" id="comments">
                 
                 <p> <img :src=com.imageUrl alt="photo profil miniature"> 
                     {{ com.nom }} {{ com.prenom }} a commenté: </p>
                 <p id="com"> {{com.message}} <button v-if="com.id==this.userId"   @click="deleteMessage(com.messageId)" >X</button></p>
             </div>
-            <form  @submit.prevent="sendComment(post.postId)" >
-                <textarea maxlength="255" v-model="newComment.message"></textarea>
-                <input type="submit" value="commenter"/>
-                <button @click="noComment">annuler</button>
+            <form  @submit.prevent="sendComment(post.postId)" id="writeCom">
+                <textarea maxlength="255" v-model="newComment.message" placeholder="écrivez votre commentaire (max 255 charactère)"></textarea>
+                <input type="submit" value="commenter"/>   
             </form>
+            <button @click="noComment(post.postId)">annuler</button>
         </div>
         </div>
     </div>
@@ -54,16 +62,19 @@ export default {
             userId:localStorage.userId,
             profil: document.location.href.includes("profil"),
             userAuth:"",
-            liked:{type: Boolean, 'default': false},
-            disliked:{type: Boolean, 'default': false},
-            com:"",
+            liked:[],
+            disliked:[],
+            com:[],
             post_id:"",
             newComment:{
                 postId:"",
                 userId:"",
                 message:""
             },
-            allComs:[]
+            allComs:[],
+            likeStatus:0,
+            likeNbr:[],
+            dislikeNbr:[],
         }
     },
     components:{
@@ -75,9 +86,11 @@ export default {
             if (this.profil){
                 this.getAllPostById();
                 
+                
             }
             else{
             this.getAllPost();
+            
             }
         }
         else{
@@ -98,6 +111,8 @@ export default {
             .then(function (response) {
             const data = response.data;
             self.allPosts = data;
+            self.isLike();
+            self.isDislike()
             })
             .catch(function (error) {
             console.log(error);
@@ -147,7 +162,8 @@ export default {
         //Partie Commentaire (affichage, création et suppression)
 
         comment(post_id){
-            this.com=true;
+            this.com[post_id]=true;
+            console.log(this.com);
             const self = this;            
             axios.get(`http://localhost:3000/api/message/${post_id}`, {
                 headers: {
@@ -164,8 +180,8 @@ export default {
             console.log(error);
             });
         },
-        noComment(){
-            this.com=false;
+        noComment(post_id){
+            this.com[post_id]=false;
         },
         sendComment(post_id){
             if(this.newComment.message !== ""){
@@ -213,38 +229,94 @@ export default {
         },
 
         //Partie like
-
-        like(postid){
-            this.post_id =postid
-            this.sendLike()
+        isLike(){
+            const self = this
+                axios.get(`http://localhost:3000/api/like/${this.userId}`, {
+                    headers: {                    
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    },    
+                })
+                .then(function(reponse){                   
+                    let data=reponse.data;
+                    for(let i in data){
+                    self.liked[data[i].post_id]=true;
+                    }
+                }) 
+                .catch(error => { console.log(error)}) 
             },
+        isDislike(){
+            const self = this
+                axios.get(`http://localhost:3000/api/like/dislike/${this.userId}`, {
+                    headers: {                    
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    },    
+                })
+                .then(function(reponse){
+                    let data=reponse.data;
+                    for(let i in data){
+                    self.disliked[data[i].post_id]=true;
+                    }
+                }) 
+                .catch(error => { console.log(error)}) 
+            },
+        
+        like(postid){
+            this.post_id =postid;
+            this.likeStatus=1;
+            this.likeNbr[postid]+=1;
+            console.log(this.likeNbr);
+            this.liked[postid]=true;
+            this.disliked[postid]=false;
+            this.sendLike()
+        },
+        likeOff(postid){
+            this.post_id =postid;
+            this.likeStatus=0;
+            this.likeNbr[postid]-=1;
+            console.log(this.dislikeNbr);
+            this.liked[postid]=false;
+            this.disliked[postid]=false;
+            this.sendLike()
+        },
+        dislike(postid){
+            this.post_id =postid;
+            this.likeStatus=-1;
+            this.dislikeNbr[postid]+=1;
+            this.liked[postid]=false;
+            this.disliked[postid]=true;
+            this.sendLike()
+        },
+        dislikeOff(postid){
+            this.post_id =postid;
+            this.likeStatus=0;
+            this.dislikeNbr[postid]-=1;
+            this.liked[postid]=false;
+            this.disliked[postid]=false;
+            this.sendLike()
+        },    
         sendLike(){
             const id = {
                 userId:Number(localStorage.getItem('userId')),
-                postId:this.post_id
+                postId:this.post_id,
+                like: this.likeStatus
             }
-        fetch('http://localhost:3000/api/like/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        },
-        mode: 'cors',
-        body: JSON.stringify(id),
-        })  
-            .then(function (response) {
-                console.log(response.status);
-                if (response.status == 201){
-                    location.reload();
-                }
             
-            })
+            fetch('http://localhost:3000/api/like/', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            mode: 'cors',
+            body: JSON.stringify(id),
+            })  
+            .then(location.reload())
             .catch(error => { console.log(error)})
            
         }
+    } 
         
-        
-    }
+    
 }
 
 
@@ -277,5 +349,19 @@ export default {
     #com{
         border: 2px solid black;
         padding: 5px;
+    }
+    #writeCom{
+        display: flex;
+        margin: 5px;
+        padding: 5px;
+        textarea{
+            width: 70%;
+        }
+    }
+    .green{
+        background-color: green;
+    }
+    .red{
+        background-color: red;
     }
 </style>
