@@ -15,16 +15,16 @@
             <img :src=post.file :alt=post.title>
             <div>
                 <span v-if="liked[post.postId]">
-                <button @click="likeOff(post.postId)" class="green" :name=this.likeNbr[post.postId]>like: {{ this.likeNbr[post.postId] = post.likeNumber }}</button>
-                <button disabled>dislike: {{ this.dislikeNbr[post.postId] = post.dislikeNumber }}</button>
+                <button @click="likeOff(post.postId); this.likeNbr[post.postId]-=1" class="green" >like: {{ this.likeNbr[post.postId] }}</button>
+                <button disabled>dislike: {{ this.dislikeNbr[post.postId] }}</button>
                 </span>
                 <span v-else-if="disliked[post.postId]">
-                <button disabled >like: {{ this.likeNbr[post.postId] = post.likeNumber }}</button>
-                <button @click="dislikeOff(post.postId)" class="red">dislike: {{ this.dislikeNbr[post.postId] = post.dislikeNumber }}</button>
+                <button disabled >like: {{ this.likeNbr[post.postId] }}</button>
+                <button @click="dislikeOff(post.postId);this.dislikeNbr[post.postId]-=1" class="red">dislike: {{ this.dislikeNbr[post.postId]  }}</button>
                 </span>
                 <span v-else>
-                <button @click="like(post.postId)" >like: {{ this.likeNbr[post.postId] = post.likeNumber }}</button>
-                <button @click="dislike(post.postId)">dislike: {{ this.dislikeNbr[post.postId] = post.dislikeNumber }}</button>
+                <button @click="like(post.postId); this.likeNbr[post.postId]+=1" >like: {{ this.likeNbr[post.postId]  }}</button>
+                <button @click="dislike(post.postId); this.dislikeNbr[post.postId]+=1">dislike: {{ this.dislikeNbr[post.postId]}}</button>
                 </span>
                 <button @click="comment(post.postId)">commentaire</button>
             </div>
@@ -111,6 +111,11 @@ export default {
             .then(function (response) {
             const data = response.data;
             self.allPosts = data;
+            console.log(self.allPosts);
+            for(let i of self.allPosts){
+                self.likeNbr[i.postId]=i.likeNumber;
+                self.dislikeNbr[i.postId]=i.dislikeNumber;
+            }
             self.isLike();
             self.isDislike()
             })
@@ -153,6 +158,12 @@ export default {
             .then(function (response) {
             const data = response.data;
             self.allPosts = data;
+            for(let i of self.allPosts){
+                self.likeNbr[i.postId]=i.likeNumber;
+                self.dislikeNbr[i.postId]=i.dislikeNumber;
+            }
+            self.isLike();
+            self.isDislike()
             })
             .catch(function (error) {
             console.log(error);
@@ -263,8 +274,6 @@ export default {
         like(postid){
             this.post_id =postid;
             this.likeStatus=1;
-            this.likeNbr[postid]+=1;
-            console.log(this.likeNbr);
             this.liked[postid]=true;
             this.disliked[postid]=false;
             this.sendLike()
@@ -272,8 +281,6 @@ export default {
         likeOff(postid){
             this.post_id =postid;
             this.likeStatus=0;
-            this.likeNbr[postid]-=1;
-            console.log(this.dislikeNbr);
             this.liked[postid]=false;
             this.disliked[postid]=false;
             this.sendLike()
@@ -281,7 +288,6 @@ export default {
         dislike(postid){
             this.post_id =postid;
             this.likeStatus=-1;
-            this.dislikeNbr[postid]+=1;
             this.liked[postid]=false;
             this.disliked[postid]=true;
             this.sendLike()
@@ -289,7 +295,6 @@ export default {
         dislikeOff(postid){
             this.post_id =postid;
             this.likeStatus=0;
-            this.dislikeNbr[postid]-=1;
             this.liked[postid]=false;
             this.disliked[postid]=false;
             this.sendLike()
@@ -310,7 +315,7 @@ export default {
             mode: 'cors',
             body: JSON.stringify(id),
             })  
-            .then(location.reload())
+            .then()
             .catch(error => { console.log(error)})
            
         }
