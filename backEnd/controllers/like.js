@@ -2,15 +2,22 @@ const connection = require('../config/config.js');
 
 exports.like = (req, res, next) => {
 
-    let sql='select * from `user_post` where user_id =?'
-    connection.query(sql,[req.body.userId],  function(err,result){
-        let truc = result[0];
-        if(truc){
-        console.log(truc);
-        return res.status(200).json(truc);}
+    let sql='select * from `user_post` where user_id =? and post_id =?';
+    connection.query(sql,[req.body.userId, req.body.postId],  function(err,result){  
+        if(result[0]){
+        console.log(result[0]);
+        return res.status(401).json({ error: 'Utilisateur a déjà like !' });}
         else{
-            console.log("oups");
-            return res.status(400).json(error);
+            let sql='insert into user_post (`user_id`, `post_id`) values (?,?)';
+            connection.query(sql,[req.body.userId, req.body.postId],  function(err,result){
+                if (err) throw err;
+                let sql2='update posts set `likeNumber` =likeNumber + 1 where postId=?';
+                connection.query(sql2,[req.body.postId],  function(err,result){
+                    if (err) throw err;
+                    return res.status(201).json({ message: `like ajouté`})
+                })
+
+            })
         }
     })
 };
