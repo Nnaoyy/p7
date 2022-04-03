@@ -142,3 +142,12 @@ exports.deleteUser= (req, res, next) =>{
   })
 };
       
+
+exports.findUser = (req ,res ,next ) =>{
+
+  let sql=`SELECT * FROM user WHERE nom LIKE '%${req.query.input}%' OR prenom LIKE '%${req.query.input}%' LIMIT 12;`;
+  connection.query(sql, [req.query.input], function(err, result){ 
+    let user = result;
+    return res.status(201).json(user)
+  })
+};

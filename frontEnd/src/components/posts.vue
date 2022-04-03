@@ -111,7 +111,6 @@ export default {
             .then(function (response) {
             const data = response.data;
             self.allPosts = data;
-            console.log(self.allPosts);
             for(let i of self.allPosts){
                 self.likeNbr[i.postId]=i.likeNumber;
                 self.dislikeNbr[i.postId]=i.dislikeNumber;
@@ -130,7 +129,6 @@ export default {
             this.deletePost();
         },
         deletePost(){
-            console.log(this.postId);
             const userId = this.userId
             axios.delete(`http://localhost:3000/api/post/${this.postId}`,{
                 headers: {
@@ -148,8 +146,10 @@ export default {
             .catch(error => {  error, alert("vous n'êtes pas autorisé à supprimer ce contenu!!")})
         },
         getAllPostById(){
+            let url = window.location.href;
+            let userId=url.split("profil/")[1];
             const self = this;            
-            axios.get(`http://localhost:3000/api/post/${localStorage.getItem('userId')}`, {
+            axios.get(`http://localhost:3000/api/post/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.token}`
             }
@@ -174,7 +174,6 @@ export default {
 
         comment(post_id){
             this.com[post_id]=true;
-            console.log(this.com);
             const self = this;            
             axios.get(`http://localhost:3000/api/message/${post_id}`, {
                 headers: {
@@ -185,7 +184,6 @@ export default {
             .then(function (response) {
             const data = response.data;
             self.allComs = data;
-            console.log(self.allComs);
             })
             .catch(function (error) {
             console.log(error);
@@ -198,7 +196,6 @@ export default {
             if(this.newComment.message !== ""){
                 this.newComment.postId=post_id;
                 this.newComment.userId=Number(localStorage.userId);
-                console.log(this.newComment);
                 const comment ={
                     ...this.newComment
                 }
@@ -212,7 +209,6 @@ export default {
                     body: JSON.stringify(comment),
                     })  
                 .then(function (response) {
-                    console.log(response.status);
                     if (response.status == 200){
                         location.reload();
                     }

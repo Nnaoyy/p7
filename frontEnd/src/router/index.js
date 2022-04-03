@@ -22,7 +22,7 @@ const routes = [
   },
   
   {
-    path: '/home/profil',
+    path: '/home/profil/:id?',
     name: 'profil',
     component: () => import('../views/profilPage.vue')
   }

@@ -113,8 +113,10 @@
     },
 
         profil(){
+            let url = window.location.href;
+            let userId=url.split("profil/")[1];
             const self = this;            
-            axios.get(`http://localhost:3000/api/user/${localStorage.getItem('userId')}`, {
+            axios.get(`http://localhost:3000/api/user/profil/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
             }

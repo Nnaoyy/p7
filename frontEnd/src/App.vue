@@ -4,8 +4,13 @@
     <router-link to="/home">
         <img src="./assets/icon-left-font-monochrome-black.svg"  >
     </router-link>
-    <router-link to="/home/profil" >profil</router-link>
-    <input  type="search" name="search" placeholder="Recherche"/>
+    <router-link :to="{name:'profil', params:{id: this.userId }}" >profil</router-link>
+    <div>
+    <input  type="text" id="searchBar" name="search" placeholder="Recherche" v-on:keyup="this.searchProfil()" />
+    <div id="search" >
+
+    </div>
+    </div>
     <router-link to="/" @click="logOut" >Déconnexion</router-link>  
   </nav>
   <router-view/>
@@ -38,13 +43,21 @@ nav {
 </style>
   
 <script>
-
+import axios from 'axios'
 import { mapState } from 'vuex'
 
 export default {
+  data(){
+    return{
+      resultUser:[],
+      userId:localStorage.userId,
+      
+    }
+  },
   computed: {
     ...mapState(['menu']),
-    ...mapState(['nonMenu'])
+    ...mapState(['nonMenu']),
+    
     
     
   },
@@ -53,9 +66,45 @@ export default {
       this.$store.commit('menu_off');
       localStorage.setItem('token', null)
       localStorage.setItem('userId', null)
-      console.log(localStorage);
     },
+    searchProfil() {
+    let input = document.getElementById('searchBar').value;
+
+    axios.get(`http://localhost:3000/api/user/profil/`, { 
+      params: {
+        input  
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`
+      }
+            
+    })
+    .then(reponse =>{console.log(reponse.data);
+    let data=reponse.data;
+    let search = document.getElementById("search");
+    if (search.hasChildNodes()){
+      search.removeChild(search.firstElementChild);
+      } 
+      let list = document.createElement("ul");
+      search.appendChild(list);
+    for(let user of data){
+     
+      let result = document.createElement("li");
+      let router = document.createElement("a");
+      let profil = document.createElement("p");
+      
+      list.appendChild(result);
+      result.appendChild(router);
+      router.appendChild(profil);
+      list.id="result";
+      router.href = "http://localhost:8080/#/home/profil/"+user.id;
+      profil.textContent = user.nom +" " +user.prenom;
+      
+    }
     
+    })
+    .catch(function (error) {console.log(error);})
+}
     
   }
    
