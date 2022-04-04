@@ -34,7 +34,7 @@
                 
             </div>
             <br/>
-            <button v-if="user.id==userId" @click.prevent="deleteUser" >suprimer le compte</button>
+            <button v-if="user.id == this.userId || this.admin == 'true'" @click.prevent="deleteUser" >suprimer le compte</button>
 
             <!--a rajouter la modification du profil si le profil de l'utilisateur-->
             
@@ -80,6 +80,7 @@
             password:null,
             file:'',
             userId: localStorage.userId,
+            admin:localStorage.admin,
             };
             
 
@@ -125,6 +126,9 @@
             .then(function (response) {
             const data = response.data;
             self.user = data;
+            console.log(self.user);
+            console.log(self.userId);
+            console.log(self.admin);
             })
             .catch(function (error) {
             console.log(error);
@@ -196,16 +200,29 @@
             
         },
         deleteUser(){
-            axios.delete(`http://localhost:3000/api/user/${localStorage.getItem('userId')}`,{
+            let url = window.location.href;
+            let userId=url.split("profil/")[1];
+            axios.delete(`http://localhost:3000/api/user/${userId}`,{
                 headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+                body:{
+                    admin:this.admin,
                 }
             })
-            .then(this.$store.commit('menu_off'),
+            .then(res=>{
+                if(res.status == 201){
+                    if(this.admin){
+                        this.$router.push("/home");
+                    }
+                    else{
+                this.$store.commit('menu_off'),
                 localStorage.setItem('token', null),
                 localStorage.setItem('userId', null),
+                localStorage.setItem('admin', null),
                 console.log(localStorage),
-                this.$router.push("/"))
+                this.$router.push("/")}}
+                })
             .catch(error => { console.log(error)})
             } 
             

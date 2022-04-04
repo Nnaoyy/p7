@@ -7,7 +7,7 @@
         <div id="profil"><!-- qui publie-->
             <img :src=post.imageUrl alt="photo profil miniature">
             <p>{{ post.nom }} {{ post.prenom }}</p>  
-            <button v-if="post.id==this.userId"   @click="idChange" :name=post.postId >X</button>
+            <button v-if="post.id==this.userId || this.admin == 'true'"   @click="idChange" :name=post.postId >X</button>
             
         </div>
         <div id="meme"><!--meme -->
@@ -34,7 +34,7 @@
                 
                 <p> <img :src=com.imageUrl alt="photo profil miniature"> 
                     {{ com.nom }} {{ com.prenom }} a commenté: </p>
-                <p id="com"> {{com.message}} <button v-if="com.id==this.userId"   @click="deleteMessage(com.messageId)" >X</button></p>
+                <p id="com"> {{com.message}} <button v-if="com.id==this.userId || this.admin == 'true'"   @click="deleteMessage(com.messageId)" >X</button></p>
             </div>
             <form  @submit.prevent="sendComment(post.postId)" id="writeCom">
                 <textarea maxlength="255" v-model="newComment.message" placeholder="écrivez votre commentaire (max 255 charactère)"></textarea>
@@ -60,6 +60,7 @@ export default {
             allPosts:[],
             postId:"",
             userId:localStorage.userId,
+            admin:localStorage.admin,
             profil: document.location.href.includes("profil"),
             userAuth:"",
             liked:[],
@@ -129,13 +130,15 @@ export default {
             this.deletePost();
         },
         deletePost(){
-            const userId = this.userId
+            const userId = this.userId;
+            const admin = this.admin;
             axios.delete(`http://localhost:3000/api/post/${this.postId}`,{
                 headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
                 data:{
-                    id: userId
+                    id: userId,
+                    admin
                 }
             })
             .then(res => {
@@ -224,7 +227,9 @@ export default {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
                 data:{
-                    userId: Number(self.userId)
+                    userId: Number(self.userId),
+                    admin:self.admin,
+
                 }
             })
             .then(res => {

@@ -73,10 +73,13 @@ export default {
         if (res.status == 200){
         const localData = res
         localData.json().then(data => {                
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('userId', data.userId)
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.userId);console.log(data.admin);
+        if(data.admin == true){
+          localStorage.setItem('admin', data.admin); 
+        }
         console.log(localStorage);
-        })   
+        })  
         self.$store.commit('menu_on');
         self.$router.push("/home"); 
         }

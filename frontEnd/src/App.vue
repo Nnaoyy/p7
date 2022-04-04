@@ -51,6 +51,7 @@ export default {
     return{
       resultUser:[],
       userId:localStorage.userId,
+      admin:localStorage.admin,
       
     }
   },
@@ -61,11 +62,14 @@ export default {
     
     
   },
+  
+  
   methods: {
     logOut() {
       this.$store.commit('menu_off');
       localStorage.setItem('token', null)
       localStorage.setItem('userId', null)
+      localStorage.setItem('admin', null)
     },
     searchProfil() {
     let input = document.getElementById('searchBar').value;
@@ -79,7 +83,7 @@ export default {
       }
             
     })
-    .then(reponse =>{console.log(reponse.data);
+    .then(reponse =>{
     let data=reponse.data;
     let search = document.getElementById("search");
     if (search.hasChildNodes()){

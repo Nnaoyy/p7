@@ -30,12 +30,13 @@ exports.getAllPostById = (req, res, next) =>{
 
 
 exports.deletePost = (req, res, next) =>{
+    console.log(req.body.admin !== 'true')
     let sql = 'SELECT * FROM `posts` WHERE `postId`=?';
     connection.query(sql, [req.params.id], function(err,result){
         let post = result[0];
         console.log(post);
         console.log(Number(req.body.id));
-        if (post.user_id !== Number(req.body.id)){
+        if (post.user_id !== Number(req.body.id) && req.body.admin !== 'true'){
             return res.status(401).json({ error: 'accés non autorisé!' });
           }
         else{

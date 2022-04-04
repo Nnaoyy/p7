@@ -42,14 +42,26 @@ exports.login = (req, res, next) => {
         if (!valid) {
           return res.status(401).json({ error: 'Mot de passe incorrect !' });
         }
+        if(user.admin == 1){
         res.status(200).json({
           userId: user.id,
           token: jwt.sign(
             { userId: user.id },
             'RANDOM_TOKEN_SECRET',
             { expiresIn: '24h' }
-          )
-        });
+          ),
+          admin:true
+        });}
+        else{
+          res.status(200).json({
+            userId: user.id,
+            token: jwt.sign(
+              { userId: user.id },
+              'RANDOM_TOKEN_SECRET',
+              { expiresIn: '24h' }
+            )
+          });
+        }
       })
       .catch(error => res.status(500).json({ error: 'problème serveur' }));
   })
@@ -116,7 +128,7 @@ exports.deleteUser= (req, res, next) =>{
   connection.query(sql, [req.params.id], function (err, result) {
     let user = result[0];
     //si l'utilisateur n'est pas le propriétaire du compte
-    if (user.id !== Number(req.params.id)){
+    if (user.id !== Number(req.params.id) && req.body.admin !== true){
       return res.status(401).json({ error: 'accés non autorisé!' });
     }
     else {
@@ -128,7 +140,7 @@ exports.deleteUser= (req, res, next) =>{
         let sql= 'DELETE FROM `user` WHERE `id`=?';
         connection.query(sql, [req.params.id], function(err,result){
           if (err) throw err;
-            res.status(201).json({ message: `compte supprimé` });
+            return res.status(201).json({ message: `compte supprimé` });
            })
         })
       }
@@ -145,7 +157,7 @@ exports.deleteUser= (req, res, next) =>{
 
 exports.findUser = (req ,res ,next ) =>{
 
-  let sql=`SELECT * FROM user WHERE nom LIKE '%${req.query.input}%' OR prenom LIKE '%${req.query.input}%' LIMIT 12;`;
+  let sql=`SELECT * FROM user WHERE nom LIKE '%${req.query.input}%' OR prenom LIKE '%${req.query.input}%' ORDER BY nom LIMIT 12;`;
   connection.query(sql, [req.query.input], function(err, result){ 
     let user = result;
     return res.status(201).json(user)

@@ -22,7 +22,7 @@ exports.deleteMessage = ( req, res, next) => {
     let sql = 'SELECT * FROM `messages` WHERE `messageId`=?';
     connection.query(sql, [req.params.id], function(err,result){
         let message = result[0];
-        if (message.userId !== req.body.userId){
+        if (message.userId !== req.body.userId && req.body.admin !== 'true'){
             
             return res.status(401).json({ error: 'accés non autorisé!' });
           }
