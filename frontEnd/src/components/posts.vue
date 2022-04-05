@@ -1,12 +1,11 @@
 <template>
-
-<!--a changer avec les données de la BDD -->
-
     <div >
         <div v-for="post in allPosts" :key="post.user_id" id="post">
         <div id="profil"><!-- qui publie-->
-            <img :src=post.imageUrl alt="photo profil miniature">
-            <p>{{ post.nom }} {{ post.prenom }}</p>  
+            <div>
+                <img :src=post.imageUrl alt="photo profil miniature">
+                <p>{{ post.nom }} {{ post.prenom }}</p> 
+            </div> 
             <button v-if="post.id==this.userId || this.admin == 'true'"   @click="idChange" :name=post.postId >X</button>
             
         </div>
@@ -333,41 +332,5 @@ export default {
 
 <style lang="scss">
     
-    #profil{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-
-    }
-    #meme{
-        img{
-            width: 100%;
-            height: auto;
-        }
-        div{
-            display: flex;
-            justify-content: space-between;
-        }
-    }
-    #comments{
-        display: flex;
-    }
-    #com{
-        border: 2px solid black;
-        padding: 5px;
-    }
-    #writeCom{
-        display: flex;
-        margin: 5px;
-        padding: 5px;
-        textarea{
-            width: 70%;
-        }
-    }
-    .green{
-        background-color: green;
-    }
-    .red{
-        background-color: red;
-    }
+    
 </style>

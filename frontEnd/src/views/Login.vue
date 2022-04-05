@@ -1,5 +1,5 @@
-<template>
-<div>
+<template >
+<div class="loginBack">
   <div>
     <loginSignup msg="Connectez-vous sur Groupomania"/>
   </div>
@@ -95,26 +95,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  
-  
-  .login{
-    fieldset{
-      padding: 15px;
-      margin-left: 35%;
-      margin-right: 35%;
-      display: flex;
-      flex-direction: column;
-      .button{
-        margin-left: 30%;
-        margin-right: 30%;
-      }
-      
-    }
-
-  }
-  #errorMsg{
-    color: red;
-  }
-  
-</style>

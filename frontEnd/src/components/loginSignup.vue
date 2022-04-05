@@ -6,7 +6,7 @@
     
   </nav> 
   <div >
-    <div class="truc">
+    <div class="logo">
     <div class="message">
         <h1>{{ msg }} </h1>
     </div>
@@ -18,16 +18,7 @@
 <style lang="scss">
 
 
-.truc{
-    display: flex;
-    background: url(../assets/icon.svg) no-repeat center;
-    height: 300px;
-    justify-content: center;
-  }
-  .message{
-    display: flex;
-    align-items: center;
-  }
+
 </style>
 
 <script>

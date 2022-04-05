@@ -10,26 +10,6 @@
 </template>
 
 
-<style lang="scss">
-#menu{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 2px solid black;
-    
-}
-img{
-    height: 30px;
-}
-#post{
-        border: 2px solid black;
-        margin-bottom: 30px;
-        
-    }
-#posts{
-    margin: 20px 30%;
-}
-</style>
 <script>
     import posts from '@/components/posts.vue'
     import post from '@/components/post.vue'

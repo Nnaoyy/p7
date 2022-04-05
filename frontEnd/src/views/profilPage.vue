@@ -40,32 +40,12 @@
             
         </div>
         <div >
-            <div ><!--les post de l'utilisateur-->
-                <posts/>
-            </div>
+            <!--les post de l'utilisateur-->
+            <posts/>   
         </div>
     </div>
 </template>
 
-<style lang="scss">
-    #profilPage{
-        display: flex;
-        justify-content: space-around;
-        margin: 10px 10%;
-        div {
-            width: 100%;
-        }
-        #profilPost{
-            flex-direction: column;
-            border: 2px solid black;
-            margin: 10px 0;
-        }
-    }
-    .photoProfil{
-        width: 200px;
-        height:auto;
-    }
-</style>
 
 <script>
     import posts from '@/components/posts.vue'
