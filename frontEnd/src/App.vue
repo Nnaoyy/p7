@@ -1,18 +1,20 @@
 <template>
 <div>
   <nav id="menu" v-show="menu  && !nonMenu">
-    <router-link to="/home">
-        <img src="./assets/icon-left-font-monochrome-white.svg"  >
-    </router-link>
-    <router-link :to="{name:'profil', params:{id: this.userId }}" >profil</router-link>
-    <div>
-    <input  type="text" id="searchBar" name="search" placeholder="Recherche" v-on:keyup="this.searchProfil()" @blur="hideResult()" @click="showResult()"/>
-    <div id="search" v-if="result">
-      <div v-for="resUser in resultUser" :key="resUser.nom" id="truc">
-        <router-link :to="{name:'profil', params:{id: resUser.id }}"><p> {{resUser.nom}} {{resUser.prenom}}</p></router-link>
+    <div id="logoSearch">
+      <router-link to="/home">
+          <img src="./assets/icon-left-font-monochrome-white.svg"  >
+      </router-link>
+      <div>
+      <input  type="text" id="searchBar" name="search" placeholder="Recherche" v-on:keyup="this.searchProfil()" @blur="hideResult()" @click="showResult()"/>
+      <div id="search" v-if="result">
+        <div v-for="resUser in resultUser" :key="resUser.nom" id="truc">
+          <router-link :to="{name:'profil', params:{id: resUser.id }}"><p> {{resUser.nom}} {{resUser.prenom}}</p></router-link>
+        </div>
+      </div>
       </div>
     </div>
-    </div>
+    <router-link :to="{name:'profil', params:{id: this.userId }}" >profil</router-link>
     <router-link to="/" @click="logOut" >Déconnexion</router-link>  
   </nav>
   <router-view :key="$route.fullPath" />
@@ -68,19 +70,21 @@ export default {
     const self = this;
     setTimeout(function () {
       self.result=false;
-      document.getElementById('searchBar').value="";
-      console.log(self.result);  
+      document.getElementById('searchBar').value="";  
     }, 100);
   },
   showResult(){
     this.result=true;
-    console.log(this.result);
     }    
   }
 }
 </script>
 
 <style lang="scss">
+body{
+    margin:0;
+    
+  }
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -112,6 +116,11 @@ nav {
   align-items: center;
   border: 2px solid black;
   background-color: #0f477e;
+  #logoSearch{
+    display: flex;
+    gap: 50px;
+    align-items: center;
+  }
   a{
     color:white;
   }
@@ -126,24 +135,22 @@ img{
   background-color: white;
   width: 177px;
   position: absolute;
+  flex-direction: column;
   div{
     a{
       p{
           color: black;
       }
     }
-    
-  
-  
-    
-    
-    
+ 
   }
 
 }
 
 // login et signup
-
+.loginBack{
+  background-color: white;
+}
 .login{
   fieldset{
     padding: 15px;
@@ -191,14 +198,19 @@ img{
   justify-content: space-around;
   margin: 10px 10%;
   gap:10%;
-  /*div {
-      width: 100%;
-  }*/
   #profilPost{
       flex-direction: column;
       border: 2px solid black;
       margin: 10px 0;
   }
+  .buttonProfil{
+    margin-top:10px;
+  }
+}
+#profilInfo{
+  display: flex;
+  gap: 10px;
+  
 }
 .photoProfil{
   width: 200px;
@@ -206,6 +218,7 @@ img{
 }
 
 //posts
+
 #profil{
   display: flex;
   justify-content: space-between;
@@ -240,14 +253,13 @@ img{
     gap:5px;
     margin:2px;
   }
-
   #com{
     justify-content: space-between;
     border: 2px solid black;
     padding: 5px;
   }
 }
-#writeCom{
+.writeCom{
   display: flex;
   margin: 5px;
   padding: 5px;
@@ -261,7 +273,6 @@ img{
 .red{
   background-color: red;
 }
-
 #post{
       border-radius: 2%;
       margin: 0 10px;
@@ -281,8 +292,32 @@ img{
   
 }
 
-.loginBack{
-  background-color: white;
+@media all and (max-width:768px){
+  #menu{
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left:0;
+    gap:5px;
+    #logoSearch{  
+    gap: 5px;
+  }
+  }
+  #profilPage{
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px;
+
+  }
+  #post{
+    margin:5px;
+  }
+  .login fieldset{
+    margin:5px;
+  }
+  .signup fieldset{
+    margin:5px;
+  }
+
 }
 
 </style>

@@ -30,7 +30,7 @@ exports.deleteMessage = ( req, res, next) => {
             let sql= 'DELETE FROM `messages` WHERE `messageId`=?';
             connection.query(sql, [req.params.id], function(err,result){
             if (err) throw err;
-            res.status(201).json({ message: `message supprimé` });
+            res.status(201).json({ message });
            })
         }
     } )

@@ -2,14 +2,15 @@
     <div id="profilPage">
         <div>
             <div>
-                
+                <div id="profilInfo">   
                 <img :src=user.imageUrl alt="photo de profil" class="photoProfil">
-                <p>{{ user.nom }}</p>
-                <p>{{ user.prenom }}</p>
-                <div v-if="user.id==userId">
-                <button @click="modifImage" v-if="!this.modif">modification</button>
-                <button @click="modifAnnul" v-if="this.modif">annulation</button>
-                </div>
+                    <div>
+                        <p>{{ user.nom }}</p>
+                        <p>{{ user.prenom }}</p>
+                        <button @click="modifImage" v-if="!this.modif && user.id==userId" class="buttonProfil">modification</button>
+                    </div>
+                </div> 
+                
                 <div v-if="this.modif">
                     <form >
                         <label for="file" >
@@ -27,7 +28,8 @@
                         <p id="passwordErrorMsg"></p>
                         <p>le mot de passe doit contenir au moins 8 charactère avec au moins une Majuscule, une minuscule et un chiffre </p>       
 
-                        <input type="submit" value="modifier" class="btn" @click.prevent="modifProfil">
+                        <input type="submit" value="modifier" class="btn" @click.prevent="modifProfil"><br/>
+                        <button @click="modifAnnul" v-if="this.modif && user.id==userId" class="buttonProfil">annuler</button>
                     </form>
                 
                 </div>
@@ -106,9 +108,6 @@
             .then(function (response) {
             const data = response.data;
             self.user = data;
-            console.log(self.user);
-            console.log(self.userId);
-            console.log(self.admin);
             })
             .catch(function (error) {
             console.log(error);
@@ -145,11 +144,9 @@
             let formData = new FormData()
             
             if(this.file){
-                console.log(this.file);
                 formData.append('file',this.file)
             }
             if (this.password){
-                console.log(this.password);
                 formData.append('password',this.password)
             }
             axios.put(`http://localhost:3000/api/user/${localStorage.getItem('userId')}`, formData,{
@@ -200,7 +197,6 @@
                 localStorage.setItem('token', null),
                 localStorage.setItem('userId', null),
                 localStorage.setItem('admin', null),
-                console.log(localStorage),
                 this.$router.push("/")}}
                 })
             .catch(error => { console.log(error)})

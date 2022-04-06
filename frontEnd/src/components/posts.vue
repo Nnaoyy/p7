@@ -29,13 +29,13 @@
             </div>
         </div>
         <div v-show="com[post.postId]" >
-            <div v-for="com in allComs" :key="com.id" id="comments">
+            <div v-for="com in allComs[post.postId]" :key="com.id" id="comments">
                 
                 <p> <img :src=com.imageUrl alt="photo profil miniature"> 
                     {{ com.nom }} {{ com.prenom }} a commenté: </p>
                 <p id="com"> {{com.message}} <button v-if="com.id==this.userId || this.admin == 'true'"   @click="deleteMessage(com.messageId)" >X</button></p>
             </div>
-            <form  @submit.prevent="sendComment(post.postId)" id="writeCom">
+            <form  @submit.prevent="sendComment(post.postId)" class="writeCom">
                 <textarea maxlength="255" v-model="newComment.message" placeholder="écrivez votre commentaire (max 255 charactère)"></textarea>
                 <input type="submit" value="commenter"/>   
             </form>
@@ -185,7 +185,8 @@ export default {
               })  
             .then(function (response) {
             const data = response.data;
-            self.allComs = data;
+            self.allComs[post_id] = data;
+            console.log(self.allComs);
             })
             .catch(function (error) {
             console.log(error);
@@ -201,6 +202,7 @@ export default {
                 const comment ={
                     ...this.newComment
                 }
+                const self = this;
                 fetch('http://localhost:3000/api/message/', {
                     method: 'POST',
                     headers: {
@@ -212,7 +214,8 @@ export default {
                     })  
                 .then(function (response) {
                     if (response.status == 200){
-                        location.reload();
+                        self.com[post_id]=false;
+                        self.comment(post_id);
                     }
             
                 })
@@ -233,7 +236,9 @@ export default {
             })
             .then(res => {
                 if (res.status == 201){
-                location.reload()}
+                let post_id = res.data.message.postId
+                self.comment(post_id);
+                }
                 
             })
             .catch(error => {  error, alert("vous n'êtes pas autorisé à supprimer ce contenu!!")})
