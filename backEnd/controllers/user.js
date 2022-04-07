@@ -115,7 +115,7 @@ exports.userUpdate= (req, res, next) => {
           connection.query(sql, [req.body.password, req.params.id],
            function(err,result){
             if (err) throw err;
-            res.status(201).json({ message: `photo de profil modifiée` });
+            res.status(201).json({ message: `Mot de passe modifié` });
            })
         })
         .catch(error => res.status(400).json({ error }));
@@ -127,29 +127,56 @@ exports.deleteUser= (req, res, next) =>{
   let sql= 'select * from user where id=?';
   connection.query(sql, [req.params.id], function (err, result) {
     let user = result[0];
-    //si l'utilisateur n'est pas le propriétaire du compte
+    //si l'utilisateur n'est pas le propriétaire du compte ou l'admin
     if (user.id !== Number(req.params.id) && req.body.admin !== true){
       return res.status(401).json({ error: 'accés non autorisé!' });
     }
     else {
+      let sql ='SELECT * FROM postLike where user_id = ?';
+      connection.query(sql, [req.params.id], function(err,result){
+        let like = result;
+        if (like){
+          for (let i of like){
+          let sql='update posts set `likeNumber` =likeNumber - 1 where postId=?';
+          connection.query(sql,[i.post_id],  function(err,result){
+          if (err) throw err;
+          
+          })}
+        }
+      })
+      let sql2 ='SELECT * FROM postDislike where user_id = ?';
+      connection.query(sql2, [req.params.id], function(err,result){
+        let dislike = result;
+        if(dislike){
+          for (let i of dislike){
+          let sql='update posts set `dislikeNumber` =dislikeNumber - 1 where postId=?';
+          connection.query(sql,[i.post_id],  function(err,result){
+          if (err) throw err;
+          
+          })}
+        }
+      })
       //si il y a une photo de profil on la supprime et on supprime le compte
       
       const filename = user.imageUrl.split('/images/')[1];
       if(filename !== "photoProfil_defaut.jpg"){
-      fs.unlink(`images/${filename}`, () => {
-        let sql= 'DELETE FROM `user` WHERE `id`=?';
-        connection.query(sql, [req.params.id], function(err,result){
-          if (err) throw err;
+        fs.unlink(`images/${filename}`, () => {
+          let sql= 'DELETE FROM `user` WHERE `id`=?';
+          connection.query(sql, [req.params.id], function(err,result){
+            if (err) throw err;
             return res.status(201).json({ message: `compte supprimé` });
-           })
+          })
         })
       }
-      //si il n'y a pas de photo de profil on supprime le compte
-      let sql= 'DELETE FROM `user` WHERE `id`=?';
-      connection.query(sql, [req.params.id], function(err,result){
-      if (err) throw err;
-        res.status(201).json({ message: `compte supprimé` });
-      })
+      else{
+        //si il n'y a pas de photo de profil on supprime le compte
+        let sql= 'DELETE FROM `user` WHERE `id`=?';
+        connection.query(sql, [req.params.id], function(err,result){
+        if (err) throw err;
+          return res.status(201).json({ message: `compte supprimé` });
+        })
+      }
+      
     }
   })
 };

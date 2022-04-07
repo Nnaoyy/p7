@@ -18,7 +18,10 @@
             <label for="pass">Mot de passe</label>
             <input type="password" name="pass" id="password" v-model="newUser.password"/>            
             <p id="passwordErrorMsg"></p>
-            <p>le mot de passe doit contenir au moins 8 charactère avec au moins une Majuscule, une minuscule et un chiffre </p>
+            <label for="confirmPass">Confirmation du mot de passe</label>
+            <input type="password" name="confirmPass" id="confirmPassword" v-model="newUser.confirmPassword"/>            
+            <p id="confirmPasswordErrorMsg"></p>
+            <p>Le mot de passe doit contenir au moins 8 charactère avec au moins une Majuscule, une minuscule et un chiffre </p>
           <input  type="submit" value="S'inscrire" class="button"/>
         </fieldset>
       </form>
@@ -43,7 +46,8 @@ export default {
         lastName: "",
         firstName: "",
         email: "",
-        password: ""
+        password: "",
+        confirmPassword:""
     }
     };
   },
@@ -119,13 +123,25 @@ export default {
         return true;
      }
     },
+    confirmPassword(){
+      if (this.newUser.password !== this.newUser.confirmPassword ){
+        document.getElementById("confirmPasswordErrorMsg").textContent = "Entrez le même mot de passe!"
+        document.getElementById("confirmPassword").style.border = "3px solid red";
+      }
+      else{
+        document.getElementById("confirmPasswordErrorMsg").textContent = "Confirmation mot de passe valide";
+        document.getElementById("confirmPassword").style.border = "3px solid green";
+        return true;
+      }
+    },
     inscription(){
       const self = this;
       self.verifyFirstName();
       self.verifyLastName();
       self.verifyEmail();
       self.verifyPassword();
-      if (self.verifyFirstName() && self.verifyLastName() && self.verifyEmail() && self.verifyPassword()){
+      self.confirmPassword();
+      if (self.verifyFirstName() && self.verifyLastName() && self.verifyEmail() && self.verifyPassword() && self.confirmPassword() ){
         self.signup()
       }
       
@@ -144,26 +160,32 @@ export default {
         mode: 'cors',
         body: JSON.stringify(user),
         })  
-      .then(function(){
-        fetch('http://localhost:3000/api/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors',
-        body: JSON.stringify(user),
-        })  
-        .then(res => {
-        const localData = res
-        localData.json().then(data => {                
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('userId', data.userId)
-        })
-          self.$store.commit('menu_on');
-          self.$router.push("/home");
-          
+      .then(res =>{
+        if(res.status == 201){
+          fetch('http://localhost:3000/api/user/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          mode: 'cors',
+          body: JSON.stringify(user),
+          })  
+          .then(res => {
+          const localData = res
+          localData.json().then(data => {                
+          localStorage.setItem('token', data.token)
+          localStorage.setItem('userId', data.userId)
           })
-        .catch(error => { error})  
+            self.$store.commit('menu_on');
+            self.$router.push("/home");
+            
+            })
+          .catch(error => { error})  
+        }
+        else if(res.status == 401){
+          document.getElementById("emailErrorMsg").textContent = "adresse mail déjà utilisée!"
+          document.getElementById("email").style.border = "3px solid red";
+        }
       })
       .catch(error => { error})    
     }
@@ -171,7 +193,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  
-  
-</style>

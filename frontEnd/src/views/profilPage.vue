@@ -177,34 +177,33 @@
             
         },
         deleteUser(){
-            let url = window.location.href;
-            let userId=url.split("profil/")[1];
-            axios.delete(`http://localhost:3000/api/user/${userId}`,{
-                headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-                },
-                body:{
-                    admin:this.admin,
-                }
-            })
-            .then(res=>{
-                if(res.status == 201){
-                    if(this.admin){
-                        this.$router.push("/home");
+            let result = confirm("voulez-vous vraiment supprimer ce compte?");
+            if (result){
+                let url = window.location.href;
+                let userId=url.split("profil/")[1];
+                axios.delete(`http://localhost:3000/api/user/${userId}`,{
+                    headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body:{
+                        admin:this.admin,
                     }
-                    else{
-                this.$store.commit('menu_off'),
-                localStorage.setItem('token', null),
-                localStorage.setItem('userId', null),
-                localStorage.setItem('admin', null),
-                this.$router.push("/")}}
                 })
-            .catch(error => { console.log(error)})
-            } 
-            
-      }
-    
-    } 
-
-
+                .then(res=>{
+                    if(res.status == 201){
+                        if(this.admin == 'true'){
+                            this.$router.push("/home");
+                        }
+                        else{
+                    this.$store.commit('menu_off'),
+                    localStorage.setItem('token', null),
+                    localStorage.setItem('userId', null),
+                    localStorage.setItem('admin', null),
+                    this.$router.push("/")}}
+                    })
+                .catch(error => { console.log(error)})
+            }
+        }         
+    }    
+}
 </script>
