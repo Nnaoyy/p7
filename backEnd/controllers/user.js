@@ -50,6 +50,7 @@ exports.login = (req, res, next) => {
             'RANDOM_TOKEN_SECRET',
             { expiresIn: '24h' }
           ),
+          img:user.imageUrl,
           admin:true
         });}
         else{
@@ -59,7 +60,8 @@ exports.login = (req, res, next) => {
               { userId: user.id },
               'RANDOM_TOKEN_SECRET',
               { expiresIn: '24h' }
-            )
+            ),
+            img:user.imageUrl,
           });
         }
       })
