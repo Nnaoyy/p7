@@ -13,10 +13,10 @@
         </div>
       </div>
       </div>
-      <router-link :to="{name:'profil', params:{id: this.userId }}" id="profilScreen"><img :src=userImg > profil</router-link>
+      <router-link :to="{name:'profil', params:{id: this.userId }}" id="profilScreen"><img :src=userImg > Profil</router-link>
     </div>
 
-    <router-link :to="{name:'profil', params:{id: this.userId }}" id="profilMobile"><img :src=userImg >profil</router-link>
+    <router-link :to="{name:'profil', params:{id: this.userId }}" id="profilMobile"><img :src=userImg >Profil</router-link>
     <router-link to="/" @click="logOut" id="logout"><img src="./assets/right-from-bracket-solid.svg"> Déconnexion</router-link> 
 
   </nav>
