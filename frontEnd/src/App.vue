@@ -13,9 +13,12 @@
         </div>
       </div>
       </div>
+      <router-link :to="{name:'profil', params:{id: this.userId }}" id="profilScreen"><img :src=userImg > profil</router-link>
     </div>
-    <router-link :to="{name:'profil', params:{id: this.userId }}" >profil</router-link>
-    <router-link to="/" @click="logOut" >Déconnexion</router-link>  
+
+    <router-link :to="{name:'profil', params:{id: this.userId }}" id="profilMobile"><img :src=userImg >profil</router-link>
+    <router-link to="/" @click="logOut" id="logout"><img src="./assets/right-from-bracket-solid.svg"> Déconnexion</router-link> 
+
   </nav>
   <router-view :key="$route.fullPath" />
 </div>
@@ -31,6 +34,7 @@ export default {
     return{
       result:false,
       userId:localStorage.userId,
+      userImg:localStorage.userImg,
       admin:localStorage.admin,   
       resultUser:[],  
     }
@@ -93,7 +97,9 @@ body{
     color: #2c3e50;
     background-color: rgba(218, 216, 216, 0.726);
 }
-
+button, input[type=submit]{
+  cursor: pointer;
+}
 //menu principale
 
 nav {
@@ -120,14 +126,32 @@ nav {
     display: flex;
     gap: 50px;
     align-items: center;
+    #profilScreen{
+      display:flex;
+      align-items: center;
+      gap:3px;
+    }
+  }
+  #profilDecoButton{
+    display: flex;
+    justify-content: space-between;
   }
   a{
     color:white;
   }
-  
+  #profilMobile{
+    display: none;
+  }
 }
 img{
   height: 30px;
+}
+#logout{
+  display: flex;
+  align-items: center;
+  img{
+    margin-right: 3px;
+  }
 }
 
 #search{
@@ -242,6 +266,10 @@ img{
       justify-content: space-between;
   }
 }
+#preview{
+  height: auto;
+  max-height: 300px;
+}
 #comments{
   display: flex;
   flex-direction: column;
@@ -280,8 +308,11 @@ img{
       background-color: white;
       padding-bottom: 10px;
       button{
-        border: none;
-        border-radius: 50%;
+        margin: 3px;
+        font-size: 15px;
+        .logoLike{
+          width: 10px;
+        }
       }
   }
 #posts{
@@ -300,7 +331,15 @@ img{
     gap:5px;
     #logoSearch{  
     gap: 5px;
-  }
+    #profilScreen{
+      display: none;
+    }
+    }
+    #profilMobile{
+      display:flex;
+      align-items: center;
+      gap:3px;
+    }
   }
   #profilPage{
     flex-direction: column;

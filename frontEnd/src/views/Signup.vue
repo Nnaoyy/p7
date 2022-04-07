@@ -173,8 +173,9 @@ export default {
           .then(res => {
           const localData = res
           localData.json().then(data => {                
-          localStorage.setItem('token', data.token)
-          localStorage.setItem('userId', data.userId)
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userId', data.userId);
+          localStorage.setItem('userImg', data.img);
           })
             self.$store.commit('menu_on');
             self.$router.push("/home");

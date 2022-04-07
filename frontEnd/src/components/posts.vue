@@ -14,16 +14,16 @@
             <img :src=post.file :alt=post.title>
             <div>
                 <span v-if="liked[post.postId]">
-                <button @click="likeOff(post.postId); this.likeNbr[post.postId]-=1" class="green" >like: {{ this.likeNbr[post.postId] }}</button>
-                <button disabled>dislike: {{ this.dislikeNbr[post.postId] }}</button>
+                <button @click="likeOff(post.postId); this.likeNbr[post.postId]-=1" class="green" ><img src="../assets/up-long-solid.svg" class="logoLike"> {{ this.likeNbr[post.postId] }}</button>
+                <button disabled><img src="../assets/down-long-solid.svg" class="logoLike"> {{ this.dislikeNbr[post.postId] }}</button>
                 </span>
                 <span v-else-if="disliked[post.postId]">
-                <button disabled >like: {{ this.likeNbr[post.postId] }}</button>
-                <button @click="dislikeOff(post.postId);this.dislikeNbr[post.postId]-=1" class="red">dislike: {{ this.dislikeNbr[post.postId]  }}</button>
+                <button disabled ><img src="../assets/up-long-solid.svg" class="logoLike"> {{ this.likeNbr[post.postId] }}</button>
+                <button @click="dislikeOff(post.postId);this.dislikeNbr[post.postId]-=1" class="red"><img src="../assets/down-long-solid.svg" class="logoLike"> {{ this.dislikeNbr[post.postId]  }}</button>
                 </span>
                 <span v-else>
-                <button @click="like(post.postId); this.likeNbr[post.postId]+=1" >like: {{ this.likeNbr[post.postId]  }}</button>
-                <button @click="dislike(post.postId); this.dislikeNbr[post.postId]+=1">dislike: {{ this.dislikeNbr[post.postId]}}</button>
+                <button @click="like(post.postId); this.likeNbr[post.postId]+=1" ><img src="../assets/up-long-solid.svg" class="logoLike"> {{ this.likeNbr[post.postId]  }}</button>
+                <button @click="dislike(post.postId); this.dislikeNbr[post.postId]+=1"><img src="../assets/down-long-solid.svg" class="logoLike"> {{ this.dislikeNbr[post.postId]}}</button>
                 </span>
                 <button @click="comment(post.postId)">commentaire</button>
             </div>

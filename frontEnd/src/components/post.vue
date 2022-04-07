@@ -6,9 +6,11 @@
                     <img id="preview"  src="" >   
                 </div>                
             </label>
-            <input type="file" ref="file" name="post"  @change="selectFile"> 
+            <input type="file" ref="file" name="post"  @change="selectFile"><br/> 
             <label for="postMsg">Titre:</label>
-            <input type="text" name="postTitle" id="postTitle" v-model="postTitle"/>            
+            <input type="text" name="postTitle" id="postTitle" v-model="postTitle"/>  
+            <br/>  
+            <br/>         
             <input type="submit" value="envoyer" class="btn" @click.prevent="sendPost">
         </form>
     </div>

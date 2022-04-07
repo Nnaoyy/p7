@@ -74,7 +74,8 @@ export default {
         const localData = res
         localData.json().then(data => {                
         localStorage.setItem('token', data.token);
-        localStorage.setItem('userId', data.userId);console.log(data.admin);
+        localStorage.setItem('userId', data.userId);
+        localStorage.setItem('userImg', data.img);
         if(data.admin == true){
           localStorage.setItem('admin', data.admin); 
         }
