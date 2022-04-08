@@ -1,6 +1,8 @@
 <template>
 <div>
+  
   <nav id="menu" v-show="menu  && !nonMenu">
+    
     <div id="logoSearch">
       <router-link to="/home">
           <img src="./assets/icon-left-font-monochrome-white.svg"  >
@@ -87,21 +89,77 @@ export default {
 <style lang="scss">
 body{
     margin:0;
+    position: relative;
+    z-index: 1; 
     
   }
+  .test{
+    position: absolute;
+    z-index: 3;
+    background-color: rgb(218, 216, 216);
+    width: 100%;
+    height: 100%;
+    animation: disparition 1s both; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.chargement{    
+    position: absolute;
+    left: 50%;
+    top: 50vh;
+    z-index: 4;
+    width: 120px;
+    height: 120px;
+    margin: -76px 0 0 -76px;
+    border: 16px solid white;
+    border-radius: 50%;
+    border-top: 16px solid blue;
+    background-color:  rgba(218, 216, 216, 0.726);
+    animation: chargement 1s linear both  ;
+}
+@keyframes chargement{
+  0%{
+      transform: rotate(0deg);
+  }
+  99.9%{
+    transform: rotate(720deg);
+    opacity:1;
+  }
+  100%{
+      
+      opacity:0;
+      transform:translatex(-1000px);
+  }
+}
+@keyframes disparition{
+  0%{
+    opacity:1
+  }
+  99.9%{
+    transform:translatex(0);
+    opacity:1;
+  }
+  100%{
+    opacity:0;
+    transform:translatex(-3000px);
+  }
+}
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    background-color: rgba(218, 216, 216, 0.726);
+    background-color: rgb(218, 216, 216);
 }
 button, input[type=submit]{
   cursor: pointer;
 }
 //menu principale
-
+.affichage{
+  margin-top: 100px;
+}
 nav {
   padding: 30px;
   

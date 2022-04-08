@@ -1,5 +1,6 @@
 <template>
-<div>
+<div >
+    <div class="test"><div class="chargement"></div></div>
     <div ><!-- pour poster qqch-->
         <post />
     </div>

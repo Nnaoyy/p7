@@ -1,5 +1,6 @@
 <template>
-    <div id="profilPage">
+    <div id="profilPage" >
+        <div class="test"><div class="chargement"></div></div>
         <div>
             <div>
                 <div id="profilInfo">   
