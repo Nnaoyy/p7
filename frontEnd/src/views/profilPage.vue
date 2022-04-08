@@ -1,5 +1,5 @@
 <template>
-    <div id="profilPage" >
+    <div id="profilPage" class="padTop">
         <div class="test"><div class="chargement"></div></div>
         <div>
             <div>

@@ -1,8 +1,8 @@
 <template>
 <div>
   
-  <nav id="menu" v-show="menu  && !nonMenu">
-    
+  <div id="menu" v-show="menu  && !nonMenu">
+   <nav> 
     <div id="logoSearch">
       <router-link to="/home">
           <img src="./assets/icon-left-font-monochrome-white.svg"  >
@@ -21,7 +21,7 @@
     <router-link :to="{name:'profil', params:{id: this.userId }}" id="profilMobile"><img :src=userImg >Profil</router-link>
     <router-link to="/" @click="logOut" id="logout"><img src="./assets/right-from-bracket-solid.svg"> Déconnexion</router-link> 
 
-  </nav>
+  </nav></div>
   <router-view :key="$route.fullPath" />
 </div>
 </template>
@@ -87,6 +87,9 @@ export default {
 </script>
 
 <style lang="scss">
+.padTop{
+  padding-top: 120px;
+}
 body{
     margin:0;
     position: relative;
@@ -175,6 +178,11 @@ nav {
   }
 }
 #menu{
+  position: fixed;
+  width: 100%;
+  z-index: 4;
+  top:0;
+  nav{
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -199,6 +207,7 @@ nav {
   }
   #profilMobile{
     display: none;
+  }
   }
 }
 img{
