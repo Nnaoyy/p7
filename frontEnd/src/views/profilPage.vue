@@ -37,7 +37,7 @@
                 
             </div>
             <br/>
-            <button v-if="user.id == this.userId || this.admin == 'true'" @click.prevent="deleteUser" >suprimer le compte</button>
+            <button v-if="user.id == this.userId || this.admin == 'true'" @click.prevent="deleteUser" id="supprButton">Supprimer le compte</button>
 
             <!--a rajouter la modification du profil si le profil de l'utilisateur-->
             

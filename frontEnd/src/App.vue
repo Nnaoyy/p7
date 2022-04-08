@@ -10,7 +10,7 @@
       <div>
       <input  type="text" id="searchBar" name="search" placeholder="Recherche" v-on:keyup="this.searchProfil()" @blur="hideResult()" @click="showResult()"/>
       <div id="search" v-if="result">
-        <div v-for="resUser in resultUser" :key="resUser.nom" id="truc">
+        <div v-for="resUser in resultUser" :key="resUser.nom" id="afficheResult">
           <router-link :to="{name:'profil', params:{id: resUser.id }}"><p> {{resUser.nom}} {{resUser.prenom}}</p></router-link>
         </div>
       </div>
@@ -87,9 +87,7 @@ export default {
 </script>
 
 <style lang="scss">
-.padTop{
-  padding-top: 120px;
-}
+
 body{
     margin:0;
     position: relative;
@@ -121,6 +119,7 @@ body{
     background-color:  rgba(218, 216, 216, 0.726);
     animation: chargement 1s linear both  ;
 }
+
 @keyframes chargement{
   0%{
       transform: rotate(0deg);
@@ -156,6 +155,9 @@ body{
     color: #2c3e50;
     background-color: rgb(218, 216, 216);
 }
+.padTop{
+  padding-top: 120px;
+}
 button, input[type=submit]{
   cursor: pointer;
 }
@@ -183,31 +185,34 @@ nav {
   z-index: 4;
   top:0;
   nav{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 2px solid black;
-  background-color: #0f477e;
-  #logoSearch{
-    display: flex;
-    gap: 50px;
-    align-items: center;
-    #profilScreen{
-      display:flex;
-      align-items: center;
-      gap:3px;
-    }
-  }
-  #profilDecoButton{
     display: flex;
     justify-content: space-between;
-  }
-  a{
-    color:white;
-  }
-  #profilMobile{
-    display: none;
-  }
+    align-items: center;
+    border: 2px solid black;
+    background-color: #0f477e;
+    #logoSearch{
+      display: flex;
+      gap: 50px;
+      align-items: center;
+      #searchBar{
+        width: 250px;
+      }
+      #profilScreen{
+        display:flex;
+        align-items: center;
+        gap:3px;
+      }
+    }
+    #profilDecoButton{
+      display: flex;
+      justify-content: space-between;
+    }
+    a{
+      color:white;
+    }
+    #profilMobile{
+      display: none;
+    }
   }
 }
 img{
@@ -224,18 +229,16 @@ img{
 #search{
   border:2px solid black;
   background-color: white;
-  width: 177px;
+  width: 255px;
   position: absolute;
   flex-direction: column;
-  div{
-    a{
-      p{
+  div{  
+    display:flex;
+    margin-left: 10px; 
+     a p{
           color: black;
       }
-    }
- 
   }
-
 }
 
 // login et signup
@@ -307,7 +310,9 @@ img{
   width: 200px;
   height:auto;
 }
-
+#supprButton{
+  background-color: red;
+}
 //posts
 
 #profil{
@@ -392,12 +397,18 @@ img{
 
 @media all and (max-width:768px){
   #menu{
+
+    nav{
     flex-direction: column;
     align-items: flex-start;
+    padding: 15px;
     padding-left:0;
-    gap:5px;
+    gap:10px;
     #logoSearch{  
-    gap: 5px;
+    gap: 20px;
+    #searchBar{
+        width: 150px;
+      }
     #profilScreen{
       display: none;
     }
@@ -407,6 +418,10 @@ img{
       align-items: center;
       gap:3px;
     }
+    }
+  }
+  #search{
+  width: 160px;
   }
   #profilPage{
     flex-direction: column;
@@ -423,7 +438,10 @@ img{
   .signup fieldset{
     margin:5px;
   }
-
+  .padTop{
+    padding-top: 160px;
+  }
 }
+
 
 </style>
