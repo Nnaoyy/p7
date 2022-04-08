@@ -13,15 +13,16 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.getAllPost = (req, res, naxt) => {
-    let sql = 'SELECT * FROM `posts` JOIN `user` ON `posts`.`user_id` = `user`.`id` order by postId desc';
+    let sql = 'SELECT * , DATE_FORMAT(postDate, "%d/%m/%Y") FROM `posts` JOIN `user` ON `posts`.`user_id` = `user`.`id` order by postId desc';
     connection.query(sql, function (err, result) {
         let posts = result;
+        //console.log(posts);
         return res.status(200).json(posts)
       })
 };
 
 exports.getAllPostById = (req, res, next) =>{
-    let sql = 'SELECT * FROM `posts`  JOIN `user` ON `posts`.`user_id` = `user`.`id` WHERE `user_id` = ? order by postId desc';
+    let sql = 'SELECT * , DATE_FORMAT(postDate, "%d/%m/%Y") FROM `posts`  JOIN `user` ON `posts`.`user_id` = `user`.`id` WHERE `user_id` = ? order by postId desc';
     connection.query(sql,[req.params.id], function (err, result) {
         let posts = result;
         return res.status(200).json(posts)

@@ -4,7 +4,7 @@
         <div id="profil"><!-- qui publie-->
             <div>
                 <img :src=post.imageUrl alt="photo profil miniature">
-                <p>{{ post.nom }} {{ post.prenom }}</p> 
+                <p>{{ post.nom }} {{ post.prenom }} le {{ this.postDate[post.postId] }}</p> 
             </div> 
             <button v-if="post.id==this.userId || this.admin == 'true'"   @click="idChange" :name=post.postId >X</button>
             
@@ -32,7 +32,7 @@
             <div v-for="com in allComs[post.postId]" :key="com.id" id="comments">
                 
                 <p> <img :src=com.imageUrl alt="photo profil miniature"> 
-                    {{ com.nom }} {{ com.prenom }} a commenté: </p>
+                    {{ com.nom }} {{ com.prenom }} a commenté, le {{ this.msgDate[com.postId] }} : </p>
                 <p id="com"> {{com.message}} <button v-if="com.id==this.userId || this.admin == 'true'"   @click="deleteMessage(com.messageId)" >X</button></p>
             </div>
             <form  @submit.prevent="sendComment(post.postId)" class="writeCom">
@@ -69,12 +69,16 @@ export default {
             newComment:{
                 postId:"",
                 userId:"",
-                message:""
+                message:"",
+                date:"",
+                time:"",
             },
             allComs:[],
             likeStatus:0,
             likeNbr:[],
             dislikeNbr:[],
+            postDate:[],
+            msgDate:[],
         }
     },
     components:{
@@ -111,9 +115,14 @@ export default {
             .then(function (response) {
             const data = response.data;
             self.allPosts = data;
+            console.log(self.allPosts);
             for(let i of self.allPosts){
                 self.likeNbr[i.postId]=i.likeNumber;
                 self.dislikeNbr[i.postId]=i.dislikeNumber;
+                let date = i["DATE_FORMAT(postDate, \"%d/%m/%Y\")"];
+                self.postDate[i.postId]=date;
+                
+
             }
             self.isLike();
             self.isDislike()
@@ -160,9 +169,12 @@ export default {
             .then(function (response) {
             const data = response.data;
             self.allPosts = data;
+            console.log(self.allPosts);
             for(let i of self.allPosts){
                 self.likeNbr[i.postId]=i.likeNumber;
                 self.dislikeNbr[i.postId]=i.dislikeNumber;
+                let date = i["DATE_FORMAT(postDate, \"%d/%m/%Y\")"];
+                self.postDate[i.postId]=date;
             }
             self.isLike();
             self.isDislike()
@@ -187,6 +199,11 @@ export default {
             const data = response.data;
             self.allComs[post_id] = data;
             console.log(self.allComs);
+            for(let i of self.allComs[post_id]){
+                let date = i["DATE_FORMAT(messageDate, \"%d/%m/%Y\")"];
+                let time = i.messageTime;
+                self.msgDate[i.postId]= date + " à " + time;
+            }
             })
             .catch(function (error) {
             console.log(error);
@@ -196,9 +213,20 @@ export default {
             this.com[post_id]=false;
         },
         sendComment(post_id){
+            let now = new Date();
+            let jour= now.getDate();
+            let mois=now.getMonth() + 1;
+            let annee=now.getFullYear();
+            let date = annee+"-"+mois +"-"+jour;
+            let heure   = now.getHours();
+            let minute  = now.getMinutes();
+            let seconde = now.getSeconds();
+            let time = heure+":"+minute+":"+seconde;
             if(this.newComment.message !== ""){
                 this.newComment.postId=post_id;
                 this.newComment.userId=Number(localStorage.userId);
+                this.newComment.date=date;
+                this.newComment.time=time;
                 const comment ={
                     ...this.newComment
                 }

@@ -50,9 +50,7 @@ export default {
             console.log(this.verifFile());
             this.verifTitle();
             console.log(this.verifTitle())
-            if (this.verifFile()  && this.verifTitle()){
-            console.log("patate") ;
-              
+            if (this.verifFile()  && this.verifTitle()){ 
             let formData = new FormData()
             formData.append('userId', localStorage.getItem('userId'))
             formData.append('file',this.file)
