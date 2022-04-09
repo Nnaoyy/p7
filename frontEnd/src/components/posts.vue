@@ -1,6 +1,6 @@
 <template>
     <div >
-        <div v-for="post in allPosts" :key="post.user_id" id="post">
+        <div v-for="post in limitPost" :key="post.user_id" id="post">
         <div id="profil"><!-- qui publie-->
             <div>
                 <img :src=post.imageUrl alt="photo profil miniature">
@@ -25,23 +25,24 @@
                 <button @click="like(post.postId); this.likeNbr[post.postId]+=1" ><img src="../assets/up-long-solid.svg" class="logoLike"> {{ this.likeNbr[post.postId]  }}</button>
                 <button @click="dislike(post.postId); this.dislikeNbr[post.postId]+=1"><img src="../assets/down-long-solid.svg" class="logoLike"> {{ this.dislikeNbr[post.postId]}}</button>
                 </span>
-                <button @click="comment(post.postId)">commentaire</button>
+                <button @click="countMsg[post.postId]=5 ,comment(post.postId)">commentaire</button>
             </div>
         </div>
         <div v-show="com[post.postId]" >
-            <div v-for="com in allComs[post.postId]" :key="com.id" id="comments">
-                
+            <div v-for="com in limitCom[post.postId] " :key="com.id" id="comments">
                 <p> <img :src=com.imageUrl alt="photo profil miniature"> 
-                    {{ com.nom }} {{ com.prenom }} a commenté, le {{ this.msgDate[com.postId] }} : </p>
+                    {{ com.nom }} {{ com.prenom }} a commenté, le {{ this.msgDate[com.messageId] }} : </p>
                 <p id="com"> {{com.message}} <button v-if="com.id==this.userId || this.admin == 'true'"   @click="deleteMessage(com.messageId)" >X</button></p>
             </div>
             <form  @submit.prevent="sendComment(post.postId)" class="writeCom">
-                <textarea maxlength="255" v-model="newComment.message" placeholder="écrivez votre commentaire (max 255 charactère)"></textarea>
+                <textarea maxlength="255" v-model="newComment.message" placeholder="écrivez votre commentaire (max 255 charactère)" id="zoneCom"></textarea>
                 <input type="submit" value="commenter"/>   
             </form>
+            <button @click="countMsg[post.postId] +=5, comment(post.postId)" v-if="limitComLength[post.postId] == countMsg[post.postId]"> Afficher plus</button>
             <button @click="noComment(post.postId)">annuler</button>
+        </div>   
         </div>
-        </div>
+        <button @click="countPost +=5, getAllPost();" v-if="limitPostLength == countPost" id="buttonShowMore"> Afficher plus</button>
     </div>
 
 </template>
@@ -79,6 +80,12 @@ export default {
             dislikeNbr:[],
             postDate:[],
             msgDate:[],
+            countMsg:[],
+            limitCom:[],
+            limitComLength:[],
+            countPost:[],
+            limitPost:[],
+            limitPostLength:[],
         }
     },
     components:{
@@ -88,11 +95,13 @@ export default {
     mounted: function(){
         if(localStorage.token !== "null"){
             if (this.profil){
+                this.countPost=5;
                 this.getAllPostById();
                 
                 
             }
             else{
+            this.countPost=5;
             this.getAllPost();
             
             }
@@ -101,8 +110,16 @@ export default {
             location.reload();
         }
     },
+    
     methods:{
-        
+        limitComs(postId){
+            this.limitCom[postId]=this.allComs[postId].slice(0,this.countMsg[postId]);
+            this.limitComLength[postId]=this.limitCom[postId].length
+        },
+        limitPosts(){
+            this.limitPost=this.allPosts.slice(0,this.countPost);
+            this.limitPostLength=this.limitPost.length;
+        },
         //Partie Post
         getAllPost(){
             const self = this;            
@@ -115,7 +132,6 @@ export default {
             .then(function (response) {
             const data = response.data;
             self.allPosts = data;
-            console.log(self.allPosts);
             for(let i of self.allPosts){
                 self.likeNbr[i.postId]=i.likeNumber;
                 self.dislikeNbr[i.postId]=i.dislikeNumber;
@@ -125,7 +141,8 @@ export default {
 
             }
             self.isLike();
-            self.isDislike()
+            self.isDislike();
+            self.limitPosts();
             })
             .catch(function (error) {
             console.log(error);
@@ -169,7 +186,6 @@ export default {
             .then(function (response) {
             const data = response.data;
             self.allPosts = data;
-            console.log(self.allPosts);
             for(let i of self.allPosts){
                 self.likeNbr[i.postId]=i.likeNumber;
                 self.dislikeNbr[i.postId]=i.dislikeNumber;
@@ -177,7 +193,8 @@ export default {
                 self.postDate[i.postId]=date;
             }
             self.isLike();
-            self.isDislike()
+            self.isDislike();
+            self.limitPosts();
             })
             .catch(function (error) {
             console.log(error);
@@ -190,6 +207,7 @@ export default {
             this.com[post_id]=true;
             const self = this;            
             axios.get(`http://localhost:3000/api/message/${post_id}`, {
+                
                 headers: {
                     Authorization: `Bearer ${localStorage.token}`
             }
@@ -198,12 +216,13 @@ export default {
             .then(function (response) {
             const data = response.data;
             self.allComs[post_id] = data;
-            console.log(self.allComs);
             for(let i of self.allComs[post_id]){
                 let date = i["DATE_FORMAT(messageDate, \"%d/%m/%Y\")"];
                 let time = i.messageTime;
-                self.msgDate[i.postId]= date + " à " + time;
+                self.msgDate[i.messageId]= date + " à " + time;
+                
             }
+            self.limitComs(post_id);
             })
             .catch(function (error) {
             console.log(error);
@@ -242,10 +261,10 @@ export default {
                     })  
                 .then(function (response) {
                     if (response.status == 200){
-                        self.com[post_id]=false;
+                        document.getElementById('zoneCom').value="";
+                        self.newComment.message="";
                         self.comment(post_id);
                     }
-            
                 })
                 .catch(error => { console.log(error)})
             }

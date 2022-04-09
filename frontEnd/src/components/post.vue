@@ -47,9 +47,7 @@ export default {
         },
         sendPost(){
             this.verifFile();
-            console.log(this.verifFile());
             this.verifTitle();
-            console.log(this.verifTitle())
             if (this.verifFile()  && this.verifTitle()){ 
             let formData = new FormData()
             formData.append('userId', localStorage.getItem('userId'))

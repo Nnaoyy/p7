@@ -2,7 +2,6 @@ const connection = require('../config/config.js');
 const fs = require('fs');
 
 exports.createPost = (req, res, next) => {
-    console.log(req.body);
     let imageUrl= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     let sql='INSERT INTO `posts`(title, file, user_Id) VALUES (?,?,?)';
     connection.query(sql, [req.body.postTitle ,imageUrl , req.body.userId],
@@ -16,7 +15,6 @@ exports.getAllPost = (req, res, naxt) => {
     let sql = 'SELECT * , DATE_FORMAT(postDate, "%d/%m/%Y") FROM `posts` JOIN `user` ON `posts`.`user_id` = `user`.`id` order by postId desc';
     connection.query(sql, function (err, result) {
         let posts = result;
-        //console.log(posts);
         return res.status(200).json(posts)
       })
 };
@@ -31,12 +29,9 @@ exports.getAllPostById = (req, res, next) =>{
 
 
 exports.deletePost = (req, res, next) =>{
-    console.log(req.body.admin !== 'true')
     let sql = 'SELECT * FROM `posts` WHERE `postId`=?';
     connection.query(sql, [req.params.id], function(err,result){
         let post = result[0];
-        console.log(post);
-        console.log(Number(req.body.id));
         if (post.user_id !== Number(req.body.id) && req.body.admin !== 'true'){
             return res.status(401).json({ error: 'accés non autorisé!' });
           }

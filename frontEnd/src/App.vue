@@ -1,6 +1,5 @@
 <template>
 <div>
-  
   <div id="menu" v-show="menu  && !nonMenu">
    <nav> 
     <div id="logoSearch">
@@ -10,10 +9,9 @@
       <div>
       <input  type="text" id="searchBar" name="search" placeholder="Recherche" v-on:keyup="this.searchProfil()" @blur="hideResult()" @click="showResult()"/>
       <div id="search" v-if="result">
-        <div v-for="resUser in resultUser" :key="resUser.nom" id="afficheResult">
-          <router-link :to="{name:'profil', params:{id: resUser.id }}"><p> {{resUser.nom}} {{resUser.prenom}}</p></router-link>
+          <router-link v-for="resUser in resultUser" :key="resUser.nom" :to="{name:'profil', params:{id: resUser.id }}"><p> {{resUser.nom}} {{resUser.prenom}}</p></router-link>
         </div>
-      </div>
+      
       </div>
       <router-link :to="{name:'profil', params:{id: this.userId }}" id="profilScreen"><img :src=userImg > Profil</router-link>
     </div>
@@ -87,20 +85,24 @@ export default {
 </script>
 
 <style lang="scss">
-
+html {
+    height: 100%;
+}
 body{
     margin:0;
+    min-height: 100%;
     position: relative;
     z-index: 1; 
     
   }
   .test{
-    position: absolute;
+    position: fixed;
+    top:0;
     z-index: 3;
     background-color: rgb(218, 216, 216);
     width: 100%;
     height: 100%;
-    animation: disparition 1s both; 
+    animation: disparition 2s both; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -117,7 +119,7 @@ body{
     border-radius: 50%;
     border-top: 16px solid blue;
     background-color:  rgba(218, 216, 216, 0.726);
-    animation: chargement 1s linear both  ;
+    animation: chargement 2s linear both  ;
 }
 
 @keyframes chargement{
@@ -232,10 +234,10 @@ img{
   width: 255px;
   position: absolute;
   flex-direction: column;
-  div{  
+  a{  
     display:flex;
     margin-left: 10px; 
-     a p{
+      p{
           color: black;
       }
   }
@@ -288,9 +290,11 @@ img{
 //profilPage
 
 #profilPage{
+  position: relative;
   display: flex;
   justify-content: space-around;
-  margin: 10px 10%;
+  height: 100%;
+  margin: 0 10%;
   gap:10%;
   #profilPost{
       flex-direction: column;
@@ -394,6 +398,15 @@ img{
   justify-items: center;
   
 }
+#buttonShowMore{
+  margin-bottom: 30px;
+  width: 150px;
+  height: 50px;
+  font-size: 100%;
+  background-color: #0f477e;
+  color: white;
+  font-weight: 800;
+}
 
 @media all and (max-width:768px){
   #menu{
@@ -440,6 +453,9 @@ img{
   }
   .padTop{
     padding-top: 160px;
+  }
+  #buttonShowMore{
+    margin-top:20px;
   }
 }
 

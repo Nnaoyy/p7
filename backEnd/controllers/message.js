@@ -9,7 +9,7 @@ exports.createMessage = (req, res, next) => {
 };
 
 exports.getAllMessage = ( req, res, next) => {
-    let sql='select * ,DATE_FORMAT(messageDate, "%d/%m/%Y") from messages join user on messages.userId = user.id where postId=? order by messageId ;';
+    let sql=`select * ,DATE_FORMAT(messageDate, "%d/%m/%Y") from messages join user on messages.userId = user.id where postId=?  order by messageId ;`;
     connection.query(sql, [req.params.id], function(err, result){
         let messages = result;
         return res.status(200).json(messages)
@@ -17,7 +17,6 @@ exports.getAllMessage = ( req, res, next) => {
 };
 
 exports.deleteMessage = ( req, res, next) => {
-    console.log(req.body.userId);
     let sql = 'SELECT * FROM `messages` WHERE `messageId`=?';
     connection.query(sql, [req.params.id], function(err,result){
         let message = result[0];

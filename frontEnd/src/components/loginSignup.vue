@@ -15,12 +15,6 @@
   </div>
 </template>
 
-<style lang="scss">
-
-
-
-</style>
-
 <script>
 import { mapState } from 'vuex'
 

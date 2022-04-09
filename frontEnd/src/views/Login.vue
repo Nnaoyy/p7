@@ -79,7 +79,6 @@ export default {
         if(data.admin == true){
           localStorage.setItem('admin', data.admin); 
         }
-        console.log(localStorage);
         })  
         self.$store.commit('menu_on');
         self.$router.push("/home"); 
