@@ -25,7 +25,7 @@
                 <button @click="like(post.postId); this.likeNbr[post.postId]+=1" ><img src="../assets/up-long-solid.svg" class="logoLike"> {{ this.likeNbr[post.postId]  }}</button>
                 <button @click="dislike(post.postId); this.dislikeNbr[post.postId]+=1"><img src="../assets/down-long-solid.svg" class="logoLike"> {{ this.dislikeNbr[post.postId]}}</button>
                 </span>
-                <button @click="countMsg[post.postId]=5 ,comment(post.postId)">commentaire</button>
+                <button @click="countMsg[post.postId]=5 ,comment(post.postId)">Commentaire</button>
             </div>
         </div>
         <div v-show="com[post.postId]" >
@@ -39,7 +39,7 @@
                 <input type="submit" value="commenter"/>   
             </form>
             <button @click="countMsg[post.postId] +=5, comment(post.postId)" v-if="limitComLength[post.postId] == countMsg[post.postId]"> Afficher plus</button>
-            <button @click="noComment(post.postId)">annuler</button>
+            <button @click="noComment(post.postId)">Annuler</button>
         </div>   
         </div>
         <button @click="countPost +=5, getAllPost();" v-if="limitPostLength == countPost" id="buttonShowMore"> Afficher plus</button>

@@ -84,7 +84,7 @@ export default {
         self.$router.push("/home"); 
         }
         else{
-          document.getElementById("errorMsg").textContent = "adresse mail ou mot de passe incorect";
+          document.getElementById("errorMsg").textContent = "Adresse mail ou mot de passe incorect";
         }
         })
       .catch(error => { error})    

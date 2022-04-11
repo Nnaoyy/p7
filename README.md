@@ -3,12 +3,12 @@
 Le projet consiste à construire un réseau social interne pour les employés de Groupomania.
 Le but de cet outil est de faciliter les interactions entre collègues.
 
-Pour lancer le serveur vous aurez besoin de nodejs et mysql.
+Pour lancer le serveur vous aurez besoin de Nodejs et Mysql.
 
 ## Préparation de la base de donnée
 
 Utilisez le fichier "groupomania.sql" pour creer la base de donnée nécessaire.
-Créez une base de donée et importez le fichier sql pour créer les tables 
+Créez une base de donnée et importez le fichier sql pour créer les tables 
 
 Au niveau du backend il faudra créer un fichier ".env"
 
@@ -20,12 +20,12 @@ DB_PASSWORD =
 DB_DATABASE = 
 "
 en rentrant les différentes données
-DB_HOST là où se situe la base de donée (par defaut "localhost"),
+DB_HOST là où se situe la base de donnée (par defaut "localhost"),
 DB_USER votre nom d'utilisateur mysql (par defaut "root"),
-DB_PASSWORD le mot de passe qui corespont a votre user Mysql,
-DB_DATABASE le nom donné a la base de donée.
+DB_PASSWORD le mot de passe qui correspond à votre user Mysql,
+DB_DATABASE le nom donné à la base de donnée.
 
-Dans la base de donée un compte administrateur est déjà présent avec comme identifiant,
+Dans la base de donnée un compte administrateur est déjà présent avec comme identifiant,
 login:admin@123.fr
 mdp:Admin123
 

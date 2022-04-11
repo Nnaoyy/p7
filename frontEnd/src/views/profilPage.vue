@@ -8,7 +8,7 @@
                     <div>
                         <p>{{ user.nom }}</p>
                         <p>{{ user.prenom }}</p>
-                        <button @click="modifImage" v-if="!this.modif && user.id==userId" class="buttonProfil">modification</button>
+                        <button @click="modifImage" v-if="!this.modif && user.id==userId" class="buttonProfil">Modification</button>
                     </div>
                 </div> 
                 
@@ -27,10 +27,10 @@
                         <br/>
                         <input type="password" name="pass" id="password" v-model="password">            
                         <p id="passwordErrorMsg"></p>
-                        <p>le mot de passe doit contenir au moins 8 charactère avec au moins une Majuscule, une minuscule et un chiffre </p>       
+                        <p>Le mot de passe doit contenir au moins 8 charactères avec au moins une majuscule, une minuscule et un chiffre </p>       
 
                         <input type="submit" value="modifier" class="btn" @click.prevent="modifProfil"><br/>
-                        <button @click="modifAnnul" v-if="this.modif && user.id==userId" class="buttonProfil">annuler</button>
+                        <button @click="modifAnnul" v-if="this.modif && user.id==userId" class="buttonProfil">Annuler</button>
                     </form>
                 
                 </div>
@@ -86,7 +86,7 @@
         document.getElementById("password").style.border = "3px solid red";
         }
         else if (/[#?!@$%^&*-]/.test(this.password)){
-        document.getElementById("passwordErrorMsg").textContent = "Le mot de passe ne doit pas contenir de charactère spéciaux!"
+        document.getElementById("passwordErrorMsg").textContent = "Le mot de passe ne doit pas contenir de charactères spéciaux!"
         document.getElementById("password").style.border = "3px solid red";
         }
         else{
