@@ -3,9 +3,6 @@ const connection = require('../config/config.js');
 exports.like = (req, res, next) => {
     const likeStatus = req.body.like;
     // récupère l'id de l'URL
-    const postId = req.body.postId;
-    // récupère le userId
-    const userId = req.body.userId;
     switch(likeStatus) {
         // ajout d'un like
         case 1:

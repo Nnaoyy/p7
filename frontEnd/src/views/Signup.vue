@@ -21,7 +21,7 @@
             <label for="confirmPass">Confirmation du mot de passe</label>
             <input type="password" name="confirmPass" id="confirmPassword" v-model="newUser.confirmPassword"/>            
             <p id="confirmPasswordErrorMsg"></p>
-            <p>Le mot de passe doit contenir au moins 8 charactère avec au moins une Majuscule, une minuscule et un chiffre </p>
+            <p>Le mot de passe doit contenir au moins 8 charactères avec au moins une Majuscule, une minuscule et un chiffre </p>
           <input  type="submit" value="S'inscrire" class="button"/>
         </fieldset>
       </form>
@@ -114,7 +114,7 @@ export default {
         document.getElementById("password").style.border = "3px solid red";
       }
       else if (/[#?!@$%^&*-]/.test(this.newUser.password)){
-        document.getElementById("passwordErrorMsg").textContent = "Le mot de passe ne doit pas contenir de charactère spéciaux!"
+        document.getElementById("passwordErrorMsg").textContent = "Le mot de passe ne doit pas contenir de charactères spéciaux!"
         document.getElementById("password").style.border = "3px solid red";
       }
       else{
@@ -125,6 +125,10 @@ export default {
     },
     confirmPassword(){
       if (this.newUser.password !== this.newUser.confirmPassword ){
+        document.getElementById("confirmPasswordErrorMsg").textContent = "Entrez le même mot de passe!"
+        document.getElementById("confirmPassword").style.border = "3px solid red";
+      }
+      else if (this.newUser.password == ""){
         document.getElementById("confirmPasswordErrorMsg").textContent = "Entrez le même mot de passe!"
         document.getElementById("confirmPassword").style.border = "3px solid red";
       }

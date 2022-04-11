@@ -144,9 +144,7 @@ export default {
             self.isDislike();
             self.limitPosts();
             })
-            .catch(function (error) {
-            console.log(error);
-            });
+            .catch(error => { error});
 
         },
         idChange(e){
@@ -196,9 +194,7 @@ export default {
             self.isDislike();
             self.limitPosts();
             })
-            .catch(function (error) {
-            console.log(error);
-            });
+            .catch(error => { error});
         },
 
         //Partie Commentaire (affichage, création et suppression)
@@ -224,9 +220,7 @@ export default {
             }
             self.limitComs(post_id);
             })
-            .catch(function (error) {
-            console.log(error);
-            });
+            .catch(error => { error});
         },
         noComment(post_id){
             this.com[post_id]=false;
@@ -266,7 +260,7 @@ export default {
                         self.comment(post_id);
                     }
                 })
-                .catch(error => { console.log(error)})
+                .catch(error => { error})
             }
         },
         deleteMessage(messageId){
@@ -305,7 +299,7 @@ export default {
                     self.liked[data[i].post_id]=true;
                     }
                 }) 
-                .catch(error => { console.log(error)}) 
+                .catch(error => { error}) 
             },
         isDislike(){
             const self = this
@@ -320,7 +314,7 @@ export default {
                     self.disliked[data[i].post_id]=true;
                     }
                 }) 
-                .catch(error => { console.log(error)}) 
+                .catch(error => { error}) 
             },
         
         like(postid){
@@ -368,7 +362,7 @@ export default {
             body: JSON.stringify(id),
             })  
             .then()
-            .catch(error => { console.log(error)})
+            .catch(error => { error})
            
         }
     } 

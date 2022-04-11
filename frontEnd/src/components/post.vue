@@ -62,7 +62,7 @@ export default {
             
             })
             .then(location.reload())
-            .catch(error => { console.log(error)})
+            .catch(error => { error})
             }
             else{
                 alert("choisir une fichier valide et un titre.")

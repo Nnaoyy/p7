@@ -110,9 +110,7 @@
             const data = response.data;
             self.user = data;
             })
-            .catch(function (error) {
-            console.log(error);
-            });
+            .catch(error => { error});
 
         },
         modifImage(){
@@ -161,7 +159,7 @@
             .then(this.modif=false,location.reload())
                 
             
-            .catch(error => { console.log(error)})
+            .catch(error => { error})
 
         },
         selectFile(event) {
@@ -202,7 +200,7 @@
                     localStorage.setItem('admin', null),
                     this.$router.push("/")}}
                     })
-                .catch(error => { console.log(error)})
+                .catch(error => { error})
             }
         }         
     }    

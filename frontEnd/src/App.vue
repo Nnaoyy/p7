@@ -67,7 +67,7 @@ export default {
       this.resultUser = data;
     
       })
-      .catch(function (error) {console.log(error);})
+      .catch(error => { error})
     }
   },
   hideResult(){
